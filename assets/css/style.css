@@ -1,0 +1,91 @@
+html, body {
+    height: 100%;
+}
+
+.container {
+    max-width: 375px;
+    background-color: #FFFDE7;
+    margin: 0 auto;
+    height: 100%;
+    min-height: fit-content;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    
+    /* text-align: center; */
+    
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    align-items: center;
+    /* background-color: rgb(89,119,0,.1); */
+    background-color: #EEEFD0;
+    color: #597700;
+}
+
+
+
+#back-arrow {
+    font-size: 40px;
+    margin-left: 8px;
+}
+
+#logo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    height: 40px;
+    line-height: .7;
+}
+
+#logo-top {
+    font-size: 20px;
+    font-family: Elsie;
+    color: #597700;
+}
+
+#logo-bottom {
+   font-size: 35px;
+   font-family: 'Segoe UI';
+   font-weight: bold;
+}
+
+#account-icon {
+    font-size: 40px;
+    margin-right: 8px;
+}
+
+article {
+    width: 95%;
+    /* height: 200px; */
+    margin: 10px auto;
+    background-color: #EEEFD0;
+    min-height: fit-content;
+}
+
+
+
+
+footer {
+    position: absolute;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    /* background-color: purple; */
+    /* background-color: rgb(89,119,0,.1); */
+    background-color: #EEEFD0;
+}
+
+
+.recipe-name {
+    font-weight: bold;
+}
+
+ul {
+    /* list-style-type: circle; */
+    margin-left: 10px;
+}

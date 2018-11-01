@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Make it Mine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+    
+</head>
+<body>
+   <div class="container">
+    <header>
+        <!-- <img  src="assets/images/baseline-arrow_back-24px.svg" alt="back arrow"> -->
+        <i id="back-arrow" class="material-icons">arrow_back</i>
+        <span id="logo">
+            <span id="logo-top">Make it</span>
+            <span id="logo-bottom">MINE</span>
+        </span>
+        <!-- <img  src="assets/images/baseline-account_circle-24px.svg" alt="account icon"> -->
+        <i id="account-icon" class="material-icons" onclick="recipeSearch()">account_circle</i>
+    </header>
+
+    <article>
+        <form>
+            <label for="recipe-search">Find a Recipe!</label>
+            <input type="text" id="recipe-search">
+            <input type="button" value="submit" id="recipe-search-btn">
+        </form>
+
+        <div id="recipe-info">
+
+        </div>
+    </article>
+
+    <footer>
+
+    </footer>
+   </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="assets/js/style.js"></script>
+</body>
+</html>
