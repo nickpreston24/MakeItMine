@@ -7,25 +7,10 @@ function recipeSearch(searchParam) {
             console.log(val.recipe.label);
             $('#recipe-info').append(`
                 <div class="recipe-div">
+                    <img src="${val.recipe.image}" alt="${val.recipe.label}">
                     <p class='recipe-name'>${val.recipe.label}</p>
                 </div>
-             `);
-            for (let ing of val.recipe.ingredientLines) {
-                
-                $('#recipe-info').append(`
-                <ul class="recipe-ingredients">
-                    <li>
-                        ${ing}
-                    </li>
-                </ul>
             `);
-
-
-
-            }
-
-
-
         }
     })
 }
@@ -33,6 +18,7 @@ function recipeSearch(searchParam) {
 $(document).on('click', '#recipe-search-btn', function (event) {
     event.preventDefault();
 
-    let recipeParam = $('#recipe-search').val();
+    let recipeParam = $('#recipe-search').val().trim();
+    $('#recipe-search').val('');
     recipeSearch(recipeParam);
 })
