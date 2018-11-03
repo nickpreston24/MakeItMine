@@ -6,20 +6,20 @@ function recipeSearch(searchParam) {
         method: 'get'
         }).then(function (response) {
 
-            console.log(response.hits.length);
+            // console.log(response.hits);
 
             var results= response.hits;
 
             
             results.forEach(function (recipe, i){
-                console.log("results " + recipe.recipe.label);
-                console.log({recipe,i})
+                // console.log("results " + recipe.recipe.label);
+                // console.log({recipe,i})
                 
 
     
 
-                console.log("recipe "+ recipe.recipe.url);
-                console.log("ingredients "+ recipe.recipe.ingredientLines);
+                // console.log("recipe "+ recipe.recipe.url);
+                // console.log("ingredients "+ recipe.recipe.ingredientLines);
         
                 var recipeVar= $("<div>");
                 recipeVar.addClass("recipe-div")
@@ -37,14 +37,19 @@ function recipeSearch(searchParam) {
                 recipeVar.append(pTag)
 
                 var urlVar = JSON.stringify(recipe.recipe.url);
+                // console.log(urlVar);
                 var ingredientVar = JSON.stringify(recipe.recipe.ingredientLines);
+                // console.log(ingredientVar);
                 var labelVar = JSON.stringify(recipe.recipe.label);
+                // console.log(labelVar);
                 
                 
                 recipeVar.attr('href', urlVar);
                 recipeVar.attr('ingredients', ingredientVar);
                 recipeVar.attr('label',labelVar);
                 recipeVar.val(recipe.recipe.label);
+
+                // console.log(recipeVar);
 
 
 
@@ -60,23 +65,27 @@ function recipeSearch(searchParam) {
 })};
 
 const render = function(urlVar, ingredientVar,){
-    console.log(JSON.parse(urlVar));
+    // console.log(JSON.parse(urlVar));
     $("#new-window").append(JSON.parse(urlVar))
   
-    $("#new-window").append(JSON.parse(ingredientVar));
+    let ingredientlist = JSON.parse(ingredientVar);
+    console.log(ingredientlist);
 
-    console.log(ingredientVar);
-
-    $("#recipe-info").hide();
+    for (let val of ingredientlist) {
+        $("#new-window").append(`
+            <p>${val}</p>
+        `);
+    }
+    // console.log(ingredientVar);
+	$("#recipe-info").hide();
 
 }
 
 $(document).on("click",".recipe-div", function(event){
     console.log("render clicked");
-    var target = $(event.target);
+    var target = $(event.currentTarget);
     render(target.attr("href"), target.attr("ingredients"));
 })
-
 
 $(document).on('click', '#recipe-search-btn', function (event) {
   event.preventDefault();
