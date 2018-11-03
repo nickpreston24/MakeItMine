@@ -1,0 +1,147 @@
+html, body {
+    height: 100%;
+    font-family: Georgia;
+    background-color: grey;
+}
+
+.container {
+    max-width: 375px;
+    background-color: #FFFDE7;
+    margin: 0 auto;
+    height: 100%;
+    position: relative;
+    display: flex;
+}
+
+header {
+    display: flex;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    justify-content: space-between;
+    height: 50px;
+    align-items: center;
+    background-color: #EEEFD0;
+    color: #597700;
+}
+
+
+
+#back-arrow {
+    font-size: 40px;
+    margin-left: 8px;
+}
+
+#logo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    height: 40px;
+    line-height: .7;
+}
+
+#logo-top {
+    font-size: 20px;
+    font-family: Elsie;
+    color: #597700;
+}
+
+#logo-bottom {
+   font-size: 35px;
+   font-family: 'Segoe UI';
+   font-weight: bold;
+}
+
+#account-icon {
+    font-size: 30px;
+    margin-right: 8px;
+}
+
+article {
+    width: 100%;
+    position: relative;
+    height: calc(100vh - 100px);
+    max-height: calc(100vh - 100px);
+    padding: 55px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    
+}
+
+#recipe-info {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    flex-wrap: wrap;
+    text-align: center;
+    overflow-y: scroll;
+}
+
+.recipe-div {
+    width: 45%;
+    margin: 10px 0px;
+    background-color: #EEEFD0;
+    color: #597700;
+    border-radius: 8px;
+    box-shadow: 3px 3px 10px gray;
+}
+
+.recipe-div:hover {
+    /* background-color: #597700; */
+    color: #8b1b1f;
+}
+
+.recipe-div img {
+    width: 100%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.recipe-div p {
+    margin: 15px 0px;
+}
+
+
+
+footer {
+    position: absolute;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    background-color: #EEEFD0;
+}
+
+
+.recipe-name {
+    font-weight: bold;
+}
+
+
+
+
+
+/* scrollbar style */
+/* width */
+::-webkit-scrollbar {
+    width: 4px;
+    
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #f87d73; 
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #c14d47; 
+}
+/* end scrollbar style */
