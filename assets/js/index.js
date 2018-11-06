@@ -63,21 +63,27 @@ function recipeSearch(searchParam) {
     })
 };
 
-const render = function (urlVar, ingredientVar, ) {
+const render = function(urlVar, ingredientVar,){
     // console.log(JSON.parse(urlVar));
-    $("#new-window").append(JSON.parse(urlVar))
+    $("#new-window").append(urlVar)
+  
+    let ingredientlist = JSON.parse(ingredientVar);
+    console.log(ingredientlist);
 
-    $("#new-window").append(JSON.parse(ingredientVar));
-
-    console.log(ingredientVar);
-
+    for (let val of ingredientlist) {
+        $("#new-window").append(`
+            <p>${val}</p>
+        `);
+    }
+    // console.log(ingredientVar);
     $("#recipe-info").hide();
+    $("#search-form").hide();
 
 }
 
-$(document).on("click", ".recipe-div", function (event) {
+$(document).on("click",".recipe-div", function(event){
     console.log("render clicked");
-    var target = $(event.target);
+    var target = $(event.currentTarget);
     render(target.attr("href"), target.attr("ingredients"));
 })
 
