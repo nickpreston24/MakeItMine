@@ -164,7 +164,7 @@ input[type=submit]:active {
     background-color: #EEEFD0;
     color: #597700;
     border-radius: 8px;
-    box-shadow: 3px 3px 10px gray;
+    box-shadow: 2px 2px 8px gray;
 }
 
 .recipe-div:hover {

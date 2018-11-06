@@ -64,7 +64,7 @@ function recipeSearch(searchParam) {
 };
 
 const render = function (urlVar, ingredientVar, ) {
-    console.log(JSON.parse(urlVar));
+    // console.log(JSON.parse(urlVar));
     $("#new-window").append(JSON.parse(urlVar))
 
     $("#new-window").append(JSON.parse(ingredientVar));
