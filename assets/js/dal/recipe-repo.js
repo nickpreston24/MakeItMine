@@ -24,23 +24,75 @@ firebase.initializeApp(config);
  * Stubs
  */
 
-var recipeDB = function () {
+let recipeRepo = class {
+
+    constructor() {
+        this.db = firebase.database();
+        this.recipes = this.db.ref('recipes');
+    }
+
+    //seed test data
+    seed() {
+
+    }
+
 
     //Find recipe by unique id:
-    recipeDB.prototype.find = function (uniqueId) {
-        return {};
+    find(uniqueId) {
+        return this.recipes.once("value");
     }
 
     //Get all recipes
-    recipeDB.prototype.get = function () {
+    getAll() {
         return [{}];
     }
+
+    //get all, and return filtered by predicate
+    // x=>x>10
+    get(predicate) {
+        return "test"
+    }
+
+    //New recipes:
+    add(recipe) {
+        //update to update Users as well:
+        this.recipes.push(recipe).catch(console.error)
+    }
+
+    //Ammended recipes
+    update(recipe) {
+        //find this recipe, if it exists and update it.
+        // let recipeRef = this.recipes.child(recipe.name).once("value").then((result) => {
+        //     recipeRef.update(recipeRef.key).catch(console.error);
+        // });
+    }
+
+    //delete recipe by content (removes recipeId from user's set of recipes as well)
+    remove(recipe) {
+
+    }
 }
-
-
-
 
 /**
  * Tests
  * Uncomment to use individual tests as part of the pre-loaded JS.
  */
+
+
+let repo = new recipeRepo();
+
+repo.add({
+    name: "chicken marsalla",
+    ingredients: ["chicken", "sause", "cheese"],
+    prepTime: "00:30",
+    cookTime: "01:30",
+});
+
+repo.update({
+    name: "chicken marsalla",
+    ingredients: ["chicken", "sause", "cheese"],
+    prepTime: "00:25",
+    cookTime: "01:23",
+})
+
+console.log('recipes: ', repo.get());
