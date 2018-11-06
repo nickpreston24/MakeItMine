@@ -1,3 +1,11 @@
+.display-none {
+    display: none;
+}
+
+.color-none {
+    color: transparent;
+}
+
 .menu-container {
     display: none;
     background-color: rgba(0, 0, 0, 0.363);
@@ -16,13 +24,27 @@
     position: absolute;
     right: 0px;
     background-color: #FFFDE7;
-    animation-name: animate-menu;
+    
+}
+
+.animate-menu-out {
+    animation-name: animate-menu-out;
     animation-duration: 0.3s;
 }
 
-@keyframes animate-menu {
+.animate-menu-in {
+    animation-name: animate-menu-in;
+    animation-duration: 0.3s;
+}
+
+@keyframes animate-menu-out {
     from {right: -100%; opacity: 0}
     to {right: 0; opacity: 1}
+}
+
+@keyframes animate-menu-in {
+    from {right: 0; opacity: 1}
+    to {right: -100%; opacity: 0}
 }
 
 
