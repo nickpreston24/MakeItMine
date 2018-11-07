@@ -6,60 +6,53 @@ function recipeSearch(searchParam) {
         method: 'get'
     }).then(function (response) {
 
-        console.log(response.hits.length);
+        console.log('Hits: ', response.hits.length);
 
         var results = response.hits;
 
-
-        results.forEach(function (recipe, i) {
-            console.log("results " + recipe.recipe.label);
+        results.forEach(function (result, i) {
+            let recipe = result.recipe;
+            console.log("results " + recipe.label);
             console.log({
-                recipe,
+                result,
                 i
             })
 
+            console.log("recipe url" + recipe.url);
+            console.log("ingredients " + recipe.ingredientLines);
 
-
-
-            console.log("recipe " + recipe.recipe.url);
-            console.log("ingredients " + recipe.recipe.ingredientLines);
-
-            var recipeVar = $("<div>");
-            recipeVar.addClass("recipe-div")
+            var div = $("<div>")
+                .addClass("recipe-div")
 
             //create img tag with jquery, give it attrs src and alt, then append to recipeVar
             var imgTag = $("<img>")
-            imgTag.attr("src", recipe.recipe.image)
-            imgTag.attr("alt", recipe.recipe.label)
-            recipeVar.append(imgTag)
+                .attr("src", recipe.image)
+                .attr("alt", recipe.label)
+
+            div.append(imgTag)
 
             //create p tag with jquery, give it class recipe-name, set text and append to recipeVar
             var pTag = $("<p>")
-            pTag.addClass("recipe-name")
-            pTag.text(recipe.recipe.label)
-            recipeVar.append(pTag)
+                .addClass("recipe-name")
+                .text(recipe.label)
 
-            var urlVar = JSON.stringify(recipe.recipe.url);
-            var ingredientVar = JSON.stringify(recipe.recipe.ingredientLines);
-            var labelVar = JSON.stringify(recipe.recipe.label);
+            div.append(pTag)
 
-            console.table([urlVar, ingredientVar, labelVar])
+            var url = JSON.stringify(recipe.url);
+            var ingredients = JSON.stringify(recipe.ingredientLines);
+            var label = JSON.stringify(recipe.label);
 
-            recipeVar.attr('href', urlVar);
-            recipeVar.attr('ingredients', ingredientVar);
-            recipeVar.attr('label', labelVar);
-            recipeVar.val(recipe.recipe.label);
+            console.table([{url, ingredients, label}])
 
-
+            div.attr('href', url);
+            div.attr('ingredients', ingredients);
+            div.attr('label', label);
+            div.val(recipe.label);
 
             //append recipeVar to #recipe-info
-            $("#recipe-info").append(recipeVar)
-
-
+            $("#recipe-info").append(div)
 
         })
-
-
 
     })
 };
@@ -87,7 +80,6 @@ $(document).on("click", ".recipe-div", function (event) {
     var target = $(event.currentTarget);
     render(target.attr("href"), target.attr("ingredients"));
 })
-
 
 $(document).on("click", "#recipe-search-btn", function (event) {
     event.preventDefault();
