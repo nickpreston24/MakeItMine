@@ -7,8 +7,6 @@
  * This file provides specialized Repository-like functions for our app logic.
  */
 
-const testUID = "fUEW2E8w94PmgMks6GIoRPnl9N03" //todo: remove before code freeze.
-
 // firebase imports & inits
 var config = {
     apiKey: "AIzaSyB7ajqUKuTWs5Co6c10QSNdHJrG6zruIgw",
@@ -19,26 +17,26 @@ var config = {
     messagingSenderId: "373815431363"
 };
 
-const userRecipesPath = '/user-recipes/';
-const recipesPath = '/recipes/';
+const userRecipesPath = '/user-recipes/'; //>> recipes is a public collection.
+const recipesPath = '/recipes/'; //>> user-recipes is an index of users -> recipe.
 
 firebase.initializeApp(config);
 
 let recipeRepo = class {
 
     constructor(userID) {
-
         this.userID = userID;
-
         this.db = firebase.database();
         this.root = this.db.ref();
-
-        this.recipes = this.db.ref('recipes');
-        this.userRecipes = this.db.ref('user-recipes');
-
+        this.recipes = this.db.ref(recipesPath);
+        this.userRecipes = this.db.ref(userRecipesPath);
         this.seed() //dev-only, todo: delete after freeze
     }
 
+    /**
+     * Seeds recipe data for testing
+     * todo: remove this function when pushing to prod/master
+     */
     seed() {
 
         this.recipes.remove();
@@ -59,65 +57,79 @@ let recipeRepo = class {
             userID: testUID
         };
 
-        // let key = this.recipes.push().key
-        // this.recipes.update(seedData);
+        let newRecipeKey = this.recipes.push().key;
 
-
-        let newRecipe = this.recipes.push().key;
-
-        console.log('new reciped id: ', newRecipe);
-
-        var updates = {};
-        updates[recipesPath + newRecipe] = seedData;
-        updates[`${userRecipesPath}${testUID}/${newRecipe}`] = newRecipe;
-
-        this.root.update(updates);
+        return this.performUpdates(newRecipeKey, seedData);
     }
 
-    //Writes a new recipe from finished recipe (checks if null)
+    /**
+     * Writes a new recipe from finished recipe 
+     * (checks recipe contains nulls)
+     * @param {*} recipe 
+     */
     add(recipe) {
 
         if (!this.userID)
             throw Error('recipe must have a valid UserID!');
-        // console.log('recipe add () ', recipe);
 
         if (hasNull(recipe))
             throw Error('recipe cannot have null values!');
 
         let newRecipeKey = this.recipes.push().key;
-        var updates = {};
 
-        updates[recipesPath + newRecipeKey] = recipe;
-        updates[`${userRecipesPath}${this.userID}/${newRecipeKey}`] = newRecipeKey;
-
-        return this.root.update(updates);
+        return this.performUpdates(newRecipeKey, recipe);
     }
 
-    //Writes a new recipe from its pieces
-    write(name, ingredientsList, directions) {
+    /**
+     * Writes a new recipe from its pieces
+     * @param {*} name 
+     * @param {*} ingredients 
+     * @param {*} directions 
+     */
+    write(name, ingredients, directions, prepTime, cookTime) {
 
         if (!this.userID)
             throw Error('User ID could not be found!  Aborting write..');
-        if (!Array.isArray(ingredientsList))
-            ingredientsList = [ingredientsList];
+
+        if (!Array.isArray(ingredients))
+            ingredients = [ingredients];
 
         var recipeData = {
             userID: this.userID,
             name,
-            ingredients: ingredientsList,
+            ingredients,
             directions,
+            prepTime,
+            cookTime,
         }
 
         this.add(recipeData);
     }
 
-    //Find recipe by unique id
-    //Should only get ONE back
+    /**
+     * Writes a new recipe from its pieces
+     * @param {*} newRecipeKey 
+     * @param {*} recipe 
+     */
+    performUpdates(newRecipeKey, recipe) {
+
+        var updates = {};
+        updates[recipesPath + newRecipeKey] = recipe;
+        updates[`${userRecipesPath}${this.userID}/${newRecipeKey}`] = recipe.name;
+
+        return this.root.update(updates);
+    }
+
+    /**
+     * Find recipe by unique id
+     * Should only get ONE back
+     * @param {*} uniqueId 
+     */
     async find(uniqueId) {
+
         let recipePromise = new Promise((resolve, reject) => {
             this.recipes.child(uniqueId).once("value").then(function (snapshot) {
                 const data = snapshot.val();
-                console.log('recipe result: ', data);
                 data ? resolve(data) : reject(`recipe with id ${uniqueId} not found!`);
             })
         })
@@ -125,14 +137,16 @@ let recipeRepo = class {
         return await recipePromise;
     }
 
-    ///Get all or return filtered by predicate, e.g. x=>x>10
-    ///This is our search function
+    /**
+     * Get all or return filtered by predicate, e.g.x => x > 10
+     * This is our search function
+     * @param {*} predicate 
+     */
     async get(predicate) {
 
         let recipePromise = new Promise((resolve, reject) => {
             this.recipes.once("value").then(function (snapshot) {
                 const data = snapshot.val();
-                console.log('recipes result: ', data);
                 data ? resolve(data) : reject("recipes not found!")
             })
         })
@@ -140,25 +154,37 @@ let recipeRepo = class {
         let result = await recipePromise;
         let entries = Object.entries(result).map(e => e[1]);
         result = null;
+
         return predicate ? entries.filter(predicate) : entries;
     }
 
-    //Ammended recipes
-    update(recipe) {
+    /**
+     * Ammend recipes
+     * Find this recipe, if it exists and update it.
+     * 
+     * @param {*} recipe 
+     */
+    async ammend(recipe) {
 
-        throw new Error("Not implemented!");
+        let updatePromise = new Promise((resolve, reject) => {
+            this.userRecipes.child(this.userID).once("value").then(function (snapshot) {
+                const data = snapshot.val();
+                data ? resolve(data) : reject(`user-recipe of id ${this.userID} not found!`);
+            })
+        })
 
-        //todo: find this recipe, if it exists and update it.
-        //  >> using this recipes' uid, find the associated user, then find that recipe under user-recipes.
-        //  >> recipes is a public collection.
-        //  >> user-recipes is an index of users -> recipe.
+        let result = await updatePromise;
+        let entries = Object.entries(result).map(e => e);
+        let recipeId = entries.filter(e => e[1] === recipe.name).map(e => e[0])[0];
 
-        // let recipeRef = this.recipes.child(recipe.name).once("value").then((result) => {
-        //     recipeRef.update(recipeRef.key).catch(console.error);
-        // });
+        this.performUpdates(recipeId, recipe);
     }
 
-    //delete recipe by content (removes recipeId from user's set of recipes as well)
+    /**
+     * Deletes recipes by content
+     * (removes recipeId from user's set of recipes as well)
+     * @param {*} recipe 
+     */
     remove(recipe) {
 
         throw new Error("Not implemented!");
@@ -172,39 +198,3 @@ function hasNull(target) {
     }
     return false;
 }
-
-/**
- * Tests
- * Uncomment to use individual tests as part of the pre-loaded JS.
- */
-
-let repo = new recipeRepo(testUID);
-
-repo.write(
-    "Macaroni & cheez",
-    ["macaroni", "cheese"],
-    "Melt cheese on stovetop, cook elbow pasta for 4 mins in boiling water. Pour cheese onto elbow pasta",
-)
-
-let recipe = {
-    name: "chicken marsalla",
-    ingredients: ["chicken", "sause", "cheese"],
-    prepTime: "00:30",
-    cookTime: "01:30",
-};
-
-recipe.uid = testUID;
-repo.add(recipe);
-
-recipe = {
-    name: "chicken marsalla",
-    ingredients: ["tofu-chicken", "sause", "cheese"],
-    prepTime: "00:25",
-    cookTime: "01:23",
-};
-
-repo.update(recipe);
-
-repo.get(recipe => recipe.prepTime > "00:16").then(result => console.log(result));
-repo.get(recipe => recipe.name !== "fireball sushi").then(r => console.log(r));
-repo.get().then(results => console.log(results))
