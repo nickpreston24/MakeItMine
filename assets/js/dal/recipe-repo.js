@@ -19,11 +19,16 @@ var config = {
     messagingSenderId: "373815431363"
 };
 
+const userRecipesPath = '/user-recipes/';
+const recipesPath = '/recipes/';
+
 firebase.initializeApp(config);
 
 let recipeRepo = class {
 
-    constructor() {
+    constructor(userID) {
+
+        this.userID = userID;
 
         this.db = firebase.database();
         this.root = this.db.ref();
@@ -63,8 +68,8 @@ let recipeRepo = class {
         console.log('new reciped id: ', newRecipe);
 
         var updates = {};
-        updates['/recipes/' + newRecipe] = seedData;
-        updates[`/user-recipes/${testUID}/${newRecipe}`] = newRecipe;
+        updates[recipesPath + newRecipe] = seedData;
+        updates[`${userRecipesPath}${testUID}/${newRecipe}`] = newRecipe;
 
         this.root.update(updates);
     }
@@ -72,40 +77,52 @@ let recipeRepo = class {
     //Writes a new recipe from finished recipe (checks if null)
     add(recipe) {
 
-        if (!recipe.uid)
+        if (!this.userID)
             throw Error('recipe must have a valid UserID!');
+        // console.log('recipe add () ', recipe);
 
-        //todo: check for all nulls, exit and warn when one exists!
+        if (hasNull(recipe))
+            throw Error('recipe cannot have null values!');
 
         let newRecipeKey = this.recipes.push().key;
         var updates = {};
 
-        updates['/recipes/' + newRecipeKey] = recipe;
-        //update Users as well:
-        updates[`/user-recipes/${recipe.uid}/${newRecipeKey}`] = newRecipeKey;
+        updates[recipesPath + newRecipeKey] = recipe;
+        updates[`${userRecipesPath}${this.userID}/${newRecipeKey}`] = newRecipeKey;
 
         return this.root.update(updates);
     }
 
     //Writes a new recipe from its pieces
-    write(uid, recipeName, ingredientsList, directions) {
+    write(name, ingredientsList, directions) {
 
-        if (!uid)
+        if (!this.userID)
             throw Error('User ID could not be found!  Aborting write..');
+        if (!Array.isArray(ingredientsList))
+            ingredientsList = [ingredientsList];
 
         var recipeData = {
-            userID: uid,
-            recipeName,
-            ingredients: ingredientsList.join(','),
+            userID: this.userID,
+            name,
+            ingredients: ingredientsList,
             directions,
         }
 
-        this.write(recipeData);
+        this.add(recipeData);
     }
 
-    //Find recipe by unique id:
-    find(uniqueId) {
-        return this.recipes.child(uniqueId).once("value");
+    //Find recipe by unique id
+    //Should only get ONE back
+    async find(uniqueId) {
+        let recipePromise = new Promise((resolve, reject) => {
+            this.recipes.child(uniqueId).once("value").then(function (snapshot) {
+                const data = snapshot.val();
+                console.log('recipe result: ', data);
+                data ? resolve(data) : reject(`recipe with id ${uniqueId} not found!`);
+            })
+        })
+
+        return await recipePromise;
     }
 
     ///Get all or return filtered by predicate, e.g. x=>x>10
@@ -113,7 +130,7 @@ let recipeRepo = class {
     async get(predicate) {
 
         let recipePromise = new Promise((resolve, reject) => {
-            this.recipes.once('value').then(function (snapshot) {
+            this.recipes.once("value").then(function (snapshot) {
                 const data = snapshot.val();
                 console.log('recipes result: ', data);
                 data ? resolve(data) : reject("recipes not found!")
@@ -121,42 +138,15 @@ let recipeRepo = class {
         })
 
         let result = await recipePromise;
-
-        // result.forEach(element => {
-        // for (var key in result) {
-        //     if (result.hasOnwProperty(key)) {
-
-        //     }
-        // }
-
-        let entries = Object.entries(result);
-        console.log('entries: ', entries);
-        console.log('times', entries.map(e => e.val));
-
-        // console.log('element: ', r);
-        // });
-        // console.log('result:', result);
-        // console.log('result.key:', result[0]);
-        // console.log('predicate: ', result.key.filter(r => predicate(r)));
-
-        return result;
-
-        // let result = async () => {
-        //     let b = await this.recipes.once('value');
-        //     return b
-        // }
-        // let a = eval(result)
-
-        // .filter(r => predicate(r));
-        // return predicate ?
-        //     //with
-        //     : //without
-
-        // return a;
+        let entries = Object.entries(result).map(e => e[1]);
+        result = null;
+        return predicate ? entries.filter(predicate) : entries;
     }
 
     //Ammended recipes
     update(recipe) {
+
+        throw new Error("Not implemented!");
 
         //todo: find this recipe, if it exists and update it.
         //  >> using this recipes' uid, find the associated user, then find that recipe under user-recipes.
@@ -171,8 +161,16 @@ let recipeRepo = class {
     //delete recipe by content (removes recipeId from user's set of recipes as well)
     remove(recipe) {
 
-
+        throw new Error("Not implemented!");
     }
+}
+
+function hasNull(target) {
+    for (var member in target) {
+        if (target[member] == null)
+            return true;
+    }
+    return false;
 }
 
 /**
@@ -180,8 +178,13 @@ let recipeRepo = class {
  * Uncomment to use individual tests as part of the pre-loaded JS.
  */
 
+let repo = new recipeRepo(testUID);
 
-let repo = new recipeRepo();
+repo.write(
+    "Macaroni & cheez",
+    ["macaroni", "cheese"],
+    "Melt cheese on stovetop, cook elbow pasta for 4 mins in boiling water. Pour cheese onto elbow pasta",
+)
 
 let recipe = {
     name: "chicken marsalla",
@@ -202,30 +205,6 @@ recipe = {
 
 repo.update(recipe);
 
-repo.get(r => r.name != "fireball sushi").then(r => console.log(r));
-
-/**
- * sample from the docs
- */
-
-// function writeNewPost(uid, username, picture, title, body) {
-//     // A post entry.
-//     var postData = {
-//         author: username,
-//         uid: uid,
-//         body: body,
-//         title: title,
-//         starCount: 0,
-//         authorPic: picture
-//     };
-
-//     // Get a key for a new Post.
-//     var newPostKey = firebase.database().ref().child('posts').push().key;
-
-//     // Write the new post's data simultaneously in the posts list and the user's post list.
-//     var updates = {};
-//     updates['/posts/' + newPostKey] = postData;
-//     updates['/user-posts/' + uid + '/' + newPostKey] = postData;
-
-//     return firebase.database().ref().update(updates);
-// }
+repo.get(recipe => recipe.prepTime > "00:16").then(result => console.log(result));
+repo.get(recipe => recipe.name !== "fireball sushi").then(r => console.log(r));
+repo.get().then(results => console.log(results))
