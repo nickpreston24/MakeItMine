@@ -23,8 +23,32 @@
                 <div class="menu-container">
                     <div class="menu">
                         <button id="close-menu">Close</button>
-                        <a href="#" id="login">Login</a>
-                        <a href="#" id="sign-up">SignUp</a>
+                        <a href="#" id="login-link">Login</a>
+                        <a href="#" id="signup-link">SignUp</a>
+                        
+                        <div id="login-form-div" class="display-none">
+                            <p>login</p>
+                            <form id="login-form">
+                                <label for="login-form-email">Email</label>
+                                <input type="email" id="login-form-email">
+                                <label for="login-form-password">Password</label>
+                                <input type="password" id="login-form-password">
+                                <input type="submit" id="login-form-submit">
+                            </form>
+                        </div>
+
+                        <div id="signup-form-div" class="display-none">
+                            <p>sign-up</p>
+                            <form id="signup-form">
+                                <label for="signup-form-email">Email</label>
+                                <input type="email" id="signup-form-email">
+                                <label for="signup-form-password">Password</label>
+                                <input type="password" id="signup-form-password">
+                                <label for="signup-form-password-confirm">Confirm Password</label>
+                                <input type="password" id="signup-form-password-confirm">
+                                <input type="submit" id="signup-form-submit">
+                            </form>
+                        </div>
                     </div>
                 </div>
 
