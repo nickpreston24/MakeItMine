@@ -12,3 +12,10 @@ $(document).on('click', '#close-menu', function() {
     setTimeout(hideMenu, 300)
 });
 
+$(document).on('click', "#login-link", function() {
+    $('#login-form-div').removeClass('display-none');
+})
+
+$(document).on('click', "#signup-link", function() {
+    $('#signup-form-div').removeClass('display-none');
+})
