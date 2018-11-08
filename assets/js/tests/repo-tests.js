@@ -1,3 +1,7 @@
+/*	Author: Michael Preston
+ *	Created Date: "11-04-2018" 
+ */
+
 /**
  * Tests
  * Uncomment to use individual tests as part of the pre-loaded JS.
