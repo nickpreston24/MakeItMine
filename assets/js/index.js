@@ -1,8 +1,10 @@
 var resultsArr = [];
+const apiKey = "38d3947a3f2af312047999390586a0ad";
+const appID = "2ff8e6f6";
 
 function recipeSearch(searchParam) {
     $.ajax({
-        url: `https://api.edamam.com/search?q=${searchParam}&app_id=2ff8e6f6&app_key=38d3947a3f2af312047999390586a0ad`,
+        url: `https://api.edamam.com/search?q=${searchParam}&app_id=${appID}&app_key=${apiKey}`,
         method: 'get'
     }).then(function (response) {
 
@@ -53,7 +55,7 @@ function recipeSearch(searchParam) {
 
 
             //append recipeVar to #recipe-info
-            
+
             $("#recipe-info").append(recipeVar)
 
 
@@ -65,7 +67,7 @@ function recipeSearch(searchParam) {
     })
 };
 
-const render = function(urlVar, ingredientVar, nameVar, imgVar){
+const render = function (urlVar, ingredientVar, nameVar, imgVar) {
     // console.log(JSON.parse(urlVar));
     $("#recipe-view-name").html('');
     $("#recipe-view-img").html('');
@@ -80,7 +82,7 @@ const render = function(urlVar, ingredientVar, nameVar, imgVar){
     $("#recipe-view-instructions").append(`
         <a href=${urlVar} target='_blank'>View Instructions</a>
     `);
-  
+
     let ingredientlist = JSON.parse(ingredientVar);
     // console.log(ingredientlist);
 
@@ -97,8 +99,8 @@ const render = function(urlVar, ingredientVar, nameVar, imgVar){
 
 }
 
-$(document).on("click",".recipe-div", function(event){
-    // console.log("render clicked");
+$(document).on("click", ".recipe-div", function (event) {
+    console.log("render clicked");
     var target = $(event.currentTarget);
     render(target.attr("href"), target.attr("ingredients"), target.attr('label'), target.attr('data-img-src'));
 })
@@ -114,7 +116,6 @@ $(document).on('click', '#recipe-search-btn', function (event) {
 
 // ------New User and Login JS here ------//
 function newUser() {
-    
     let usrEmail = document.getElementById("signup-form-email").value.trim();
     let usrPassword = document.getElementById("signup-form-password").value.trim();
     let verifyUsrPassword = document.getElementById("signup-form-password-confirm").value.trim();
