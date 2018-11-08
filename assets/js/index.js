@@ -112,3 +112,4 @@ $(document).on('click', '#recipe-search-btn', function (event) {
     recipeSearch(recipeParam);
 })
 
+
