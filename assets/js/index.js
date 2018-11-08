@@ -111,5 +111,49 @@ $(document).on('click', '#recipe-search-btn', function (event) {
     $('#recipe-search').val('');
     recipeSearch(recipeParam);
 })
+// ------New User and Login JS here ------//
+function newUser() {
+    
+    let usrEmail = document.getElementById("signup-form-email").value
+    let usrPassword = document.getElementById("signup-form-password").value
+    let verifyUsrPassword = document.getElementById("signup-form-password-confirm").value
+
+    if (verifyUsrPassword === usrPassword) {
+        firebase.auth().createUserWithEmailAndPassword(usrEmail, usrPassword).catch(function (error) {
+            // Handle Errors here.
+            // var errorCode = error.code;
+            var errorMessage = error.message;
+            // ...
+            window.alert(errorMessage);
+        });
+    } else {
+        window.alert('Passwords Do Not Match');
+    };
 
 
+
+}
+
+
+
+function login() {
+    // alert('you clicked');
+    let usrEmail = document.getElementById("login-form-email").value
+    let usrPassword = document.getElementById("login-form-password").value
+
+    document.getElementById("login-form-email").value = '';
+    document.getElementById("login-form-password").value = '';
+
+    firebase.auth().signInWithEmailAndPassword(usrEmail, usrPassword).catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+        window.alert(`${errorMessage} 
+        error code: ${errorCode}`);
+    });
+}
+
+function logout() {
+    firebase.auth().signOut();
+}
