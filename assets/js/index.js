@@ -7,7 +7,7 @@ function recipeSearch(searchParam) {
     }).then(function (response) {
 
         console.log(response.hits.length);
-
+        $("#recipe-info").html('')
         var results = response.hits;
 
 
@@ -39,20 +39,21 @@ function recipeSearch(searchParam) {
             pTag.text(recipe.recipe.label)
             recipeVar.append(pTag)
 
-            var urlVar = JSON.stringify(recipe.recipe.url);
+            var urlVar = recipe.recipe.url;
             var ingredientVar = JSON.stringify(recipe.recipe.ingredientLines);
-            var labelVar = JSON.stringify(recipe.recipe.label);
-
-            console.table([urlVar, ingredientVar, labelVar])
+            var labelVar = recipe.recipe.label;
+            var imgSrc = recipe.recipe.image
 
             recipeVar.attr('href', urlVar);
             recipeVar.attr('ingredients', ingredientVar);
             recipeVar.attr('label', labelVar);
+            recipeVar.attr('data-img-src', imgSrc);
             recipeVar.val(recipe.recipe.label);
 
 
 
             //append recipeVar to #recipe-info
+            
             $("#recipe-info").append(recipeVar)
 
 
@@ -64,35 +65,51 @@ function recipeSearch(searchParam) {
     })
 };
 
-const render = function (urlVar, ingredientVar, ) {
+const render = function(urlVar, ingredientVar, nameVar, imgVar){
+    // console.log(JSON.parse(urlVar));
+    $("#recipe-view-name").html('');
+    $("#recipe-view-img").html('');
+    $("#recipe-view-instructions").html('');
+    $("#recipe-view-list").html('');
 
-    $("#new-window").append(urlVar)
+    $("#recipe-view-name").append(nameVar);
+    $("#recipe-view-img").append(`
+        <img src="${imgVar}" alt="${nameVar}">
+    `);
 
+    $("#recipe-view-instructions").append(`
+        <a href=${urlVar} target='_blank'>View Instructions</a>
+    `);
+  
     let ingredientlist = JSON.parse(ingredientVar);
     console.log(ingredientlist);
 
     for (let val of ingredientlist) {
-        $("#new-window").append(`
-            <p>${val}</p>
+        $("#recipe-view-list").append(`
+            <li>${val}</li>
         `);
     }
-
+    // console.log(ingredientVar);
     $("#recipe-info").hide();
     $("#search-form").hide();
+    $("#recipe-view-div").show();
+    $('#back-arrow').removeClass('color-none');
 
 }
 
-$(document).on("click", ".recipe-div", function (event) {
+$(document).on("click",".recipe-div", function(event){
     console.log("render clicked");
     var target = $(event.currentTarget);
-    render(target.attr("href"), target.attr("ingredients"));
+    render(target.attr("href"), target.attr("ingredients"), target.attr('label'), target.attr('data-img-src'));
 })
 
 
-$(document).on("click", "#recipe-search-btn", function (event) {
+$(document).on('click', '#recipe-search-btn', function (event) {
     event.preventDefault();
 
     let recipeParam = $('#recipe-search').val().trim();
     $('#recipe-search').val('');
     recipeSearch(recipeParam);
 })
+
+
