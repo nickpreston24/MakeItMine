@@ -30,7 +30,7 @@ let recipeRepo = class {
         this.root = this.db.ref();
         this.recipes = this.db.ref(recipesPath);
         this.userRecipes = this.db.ref(userRecipesPath);
-        this.seed() //dev-only, todo: delete after freeze
+        // this.seed() //dev-only, todo: delete after freeze
     }
 
     /**
@@ -185,7 +185,7 @@ let recipeRepo = class {
      * (removes recipeId from user's set of recipes as well)
      * @param {*} recipe 
      */
-    remove(recipe) {
+    async remove(recipe) {
 
         throw new Error("Not implemented!");
     }
