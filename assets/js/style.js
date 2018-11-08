@@ -26,3 +26,23 @@ $(document).on('click', '#back-arrow', function () {
     $("#recipe-view-div").hide();
     $('#back-arrow').addClass('color-none')
 })
+
+
+// bring up add notes modal
+$(document).on('click', '#notes-btn', function() {
+    var textArea = $('#recipe-view-list').children().text();
+    console.log(textArea);
+    $('#add-note-area').text(textArea);
+    $('#text-area-div').show();
+    $('#text-area-modal').addClass('animate-modal-out').removeClass('animate-modal-in')
+
+})
+
+// hide notes modal
+$(document).on('click', '#confirm-note-button', function() {
+    $('#text-area-modal').addClass('animate-modal-in').removeClass('animate-modal-out');
+    setTimeout((function(){
+        $('#text-area-div').hide();
+    }), 250);
+})
+
