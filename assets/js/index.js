@@ -2,7 +2,7 @@ var resultsArr = [];
 
 function recipeSearch(searchParam) {
     $.ajax({
-        url: `https://api.edamam.com/search?q=${searchParam}&app_id=2ff8e6f6&app_key=38d3947a3f2af312047999390586a0ad`,
+        url: `https://api.edamam.com/search?q=${searchParam}&app_id=2ff8e6f6&app_key=38d3947a3f2af312047999390586a0ad&health=kosher`,
         method: 'get'
     }).then(function (response) {
 
