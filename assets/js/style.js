@@ -17,3 +17,10 @@ $(document).on('click', "#login-link", function() {
 $(document).on('click', "#signup-link", function() {
     $('#signup-form-div').removeClass('display-none');
 })
+
+$(document).on('click', '#back-arrow', function() {
+    $("#recipe-info").show();
+    $("#search-form").show();
+    $("#recipe-view-div").hide();
+    $('#back-arrow').addClass('color-none')
+})
