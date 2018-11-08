@@ -37,6 +37,9 @@ recipe = {
 
 repo.ammend(recipe);
 
-repo.get(recipe => recipe.prepTime > "00:16").then(result => console.log(result));
+recipe.starred = true;
+repo.ammend(recipe);
+
 repo.get(recipe => recipe.name !== "fireball sushi").then(result => console.log(result));
+repo.get(recipe => recipe.starred).then(result => console.log(result));
 repo.get().then(results => console.log(results))

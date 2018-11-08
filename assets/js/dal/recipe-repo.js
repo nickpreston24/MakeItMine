@@ -52,8 +52,7 @@ let recipeRepo = class {
             while rolling remaining sushi rolls.To get an inside out sushi roll layer the rice on a sheet of wax paper the same size as listed above.Cut one sheet of nori length wise in half and place in middle of rice.Then add fish, egg, carrots and basil or cilantro and roll up as stated above.Take the roll and roll in a plate or cookie sheet covered with the roasted sesame seeds.
             Use a sharp knife to slice½ in .thick sushi rolls and arrange on serving plate.Garnish with the pickled ginger and soy sauce.The proper way to serve the soy sauce is with the wasabi pinched with your thumb and two fingers into a shape resembling Mt.Fuji.
             `,
-            prepTime: "00:15",
-            cookTime: "00:30",
+
             userID: testUID
         };
 
@@ -86,7 +85,7 @@ let recipeRepo = class {
      * @param {*} ingredients 
      * @param {*} directions 
      */
-    write(name, ingredients, directions, prepTime, cookTime) {
+    write(name, ingredients, directions, starred) {
 
         if (!this.userID)
             throw Error('User ID could not be found!  Aborting write..');
@@ -99,8 +98,7 @@ let recipeRepo = class {
             name,
             ingredients,
             directions,
-            prepTime,
-            cookTime,
+            starred,
         }
 
         this.add(recipeData);
