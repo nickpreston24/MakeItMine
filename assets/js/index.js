@@ -2,29 +2,20 @@ var resultsArr = [];
 const apiKey = "38d3947a3f2af312047999390586a0ad";
 const appID = "2ff8e6f6";
 
+/**
+ * Recipe Search
+ * @param {string} searchParam 
+ */
 function recipeSearch(searchParam) {
     $.ajax({
         url: `https://api.edamam.com/search?q=${searchParam}&app_id=${appID}&app_key=${apiKey}`,
         method: 'get'
     }).then(function (response) {
 
-        // console.log(response.hits.length);
         $("#recipe-info").html('')
         var results = response.hits;
 
-
         results.forEach(function (recipe, i) {
-            // console.log("results " + recipe.recipe.label);
-            // console.log({
-                // recipe,
-                // i
-            // })
-
-
-
-
-            // console.log("recipe " + recipe.recipe.url);
-            // console.log("ingredients " + recipe.recipe.ingredientLines);
 
             var recipeVar = $("<div>");
             recipeVar.addClass("recipe-div")
@@ -52,23 +43,18 @@ function recipeSearch(searchParam) {
             recipeVar.attr('data-img-src', imgSrc);
             recipeVar.val(recipe.recipe.label);
 
-
-
-            //append recipeVar to #recipe-info
-
             $("#recipe-info").append(recipeVar)
 
-
-
         })
-
-
 
     })
 };
 
+/**
+ * Render Recipe Results
+ */
 const render = function (urlVar, ingredientVar, nameVar, imgVar) {
-    // console.log(JSON.parse(urlVar));
+
     $("#recipe-view-name").html('');
     $("#recipe-view-img").html('');
     $("#recipe-view-instructions").html('');
@@ -84,14 +70,13 @@ const render = function (urlVar, ingredientVar, nameVar, imgVar) {
     `);
 
     let ingredientlist = JSON.parse(ingredientVar);
-    // console.log(ingredientlist);
 
     for (let val of ingredientlist) {
         $("#recipe-view-list").append(`
             <li>${val}</li>
         `);
     }
-    // console.log(ingredientVar);
+
     $("#recipe-info").hide();
     $("#search-form").hide();
     $("#recipe-view-div").show();
@@ -105,7 +90,9 @@ $(document).on("click", ".recipe-div", function (event) {
     render(target.attr("href"), target.attr("ingredients"), target.attr('label'), target.attr('data-img-src'));
 })
 
-
+/**
+ * Run Search
+ */
 $(document).on('click', '#recipe-search-btn', function (event) {
     event.preventDefault();
 
@@ -113,7 +100,10 @@ $(document).on('click', '#recipe-search-btn', function (event) {
     $('#recipe-search').val('');
     recipeSearch(recipeParam);
 })
-// ------New User and Login JS here ------//
+
+/**
+ * Create New User
+ */
 function newUser() {
 
     let usrEmail = document.getElementById("signup-form-email").value
@@ -122,24 +112,20 @@ function newUser() {
 
     if (verifyUsrPassword === usrPassword) {
         firebase.auth().createUserWithEmailAndPassword(usrEmail, usrPassword).catch(function (error) {
-            // Handle Errors here.
-            // var errorCode = error.code;
+
+            var errorCode = error.code;
             var errorMessage = error.message;
-            // ...
-            window.alert(errorMessage);
+
+            window.alert(`${errorMessage} error code: ${errorCode}`);
         });
     } else {
         window.alert('Passwords Do Not Match');
     };
 
-
-
 }
 
-
-
 function login() {
-    // alert('you clicked');
+
     let usrEmail = document.getElementById("login-form-email").value
     let usrPassword = document.getElementById("login-form-password").value
 
@@ -147,12 +133,11 @@ function login() {
     document.getElementById("login-form-password").value = '';
 
     firebase.auth().signInWithEmailAndPassword(usrEmail, usrPassword).catch(function (error) {
-        // Handle Errors here.
+
         var errorCode = error.code;
         var errorMessage = error.message;
-        // ...
-        window.alert(`${errorMessage} 
-        error code: ${errorCode}`);
+
+        window.alert(`${errorMessage} error code: ${errorCode}`);
     });
 }
 
