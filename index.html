@@ -20,58 +20,73 @@
         <body>
 
             <div class="container">
+                
+                <!-- side menu -->
                 <div class="menu-container">
                     <div class="menu">
                         <button id="close-menu">Close</button>
                         <a href="#" id="login-link">Login</a>
                         <a href="#" id="signup-link">SignUp</a>
-
-                        <div id="login-form-div" class="display-none">
-                            <p>login</p>
-                            <form id="login-form">
-                                <label for="login-form-email">Email</label>
-                                <input type="email" id="login-form-email">
-                                <label for="login-form-password">Password</label>
-                                <input type="password" id="login-form-password">
-                                <input type="submit" id="login-form-submit">
-                            </form>
-                        </div>
-
-                        <div id="signup-form-div" class="display-none">
-                            <p>sign-up</p>
-                            <form id="signup-form">
-                                <label for="signup-form-email">Email</label>
-                                <input type="email" id="signup-form-email">
-                                <label for="signup-form-password">Password</label>
-                                <input type="password" id="signup-form-password">
-                                <label for="signup-form-password-confirm">Confirm Password</label>
-                                <input type="password" id="signup-form-password-confirm">
-                                <input type="submit" id="signup-form-submit">
-                            </form>
-                        </div>
-
                     </div>
                 </div>
+                <!-- end side menu -->
 
+                <!-- login modal -->
+                <div id="login-modal" class="display-none">
+                    <div id="login-form-div">
+                        <p>login</p>
+                        <form id="login-form">
+                            <label for="login-form-email">Email</label>
+                            <input type="email" id="login-form-email">
+                            <label for="login-form-password">Password</label>
+                            <input type="password" id="login-form-password">
+                            <input type="submit" id="login-form-submit">
+                        </form>
+                        <a href="#" id="cancel-login">cancel</a>
+                    </div>
+                </div>
+                <!-- end login modal -->
+
+                <!-- sign up modal -->
+                <div id="signup-modal" class="display-none">
+                    <div id="signup-form-div">
+                        <p>sign-up</p>
+                        <form id="signup-form">
+                            <label for="signup-form-email">Email</label>
+                            <input type="email" id="signup-form-email">
+                            <label for="signup-form-password">Password</label>
+                            <input type="password" id="signup-form-password">
+                            <label for="signup-form-password-confirm">Confirm Password</label>
+                            <input type="password" id="signup-form-password-confirm">
+                            <input type="submit" id="signup-form-submit">
+                        </form>
+                        <a href="#" id="cancel-signup">Cancel</a>
+                    </div>
+                </div>
+                <!-- end sign up modal -->
+
+                <!-- add notes modal -->
+                <div class="display-none" id="text-area-div">
+                    <div id="text-area-modal">
+                        <textarea id="add-note-area">
+
+                        </textarea>
+                        <button id="confirm-note-button">Confirm Notes</button>
+                    </div>
+                </div>
+                <!-- end add notes modal -->
 
 
                 <header>
-                    <!-- <img  src="assets/images/baseline-arrow_back-24px.svg" alt="back arrow"> -->
                     <i id="back-arrow" class="material-icons color-none">arrow_back</i>
                     <span id="logo">
                         <span id="logo-top">Make it</span>
                         <span id="logo-bottom">MINE</span>
                     </span>
-
-                    <!-- <img  src="assets/images/baseline-account_circle-24px.svg" alt="account icon"> -->
                     <i class="fas fa-ellipsis-v" id="account-icon"></i>
                 </header>
 
 
-
-
-
-                </header>
 
                 <article>
                     <form id="search-form">
@@ -97,7 +112,7 @@
 
 
                 <footer>
-
+                    <div id="edamam-badge" data-color="white"></div>
                 </footer>
             </div>
 
@@ -106,6 +121,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase.js"></script>
 
+    <script src="https://developer.edamam.com/attribution/badge.js"></script>
     <script src="assets/js/dal/recipe-repo.js"></script>
     <!-- todo: remove tests before pushing to prod/master -->
     <!-- <script src="assets/js/tests/test.js"></script> -->
