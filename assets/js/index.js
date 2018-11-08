@@ -113,12 +113,12 @@ $(document).on('click', '#recipe-search-btn', function (event) {
     $('#recipe-search').val('');
     recipeSearch(recipeParam);
 })
+
 // ------New User and Login JS here ------//
 function newUser() {
-
-    let usrEmail = document.getElementById("signup-form-email").value
-    let usrPassword = document.getElementById("signup-form-password").value
-    let verifyUsrPassword = document.getElementById("signup-form-password-confirm").value
+    let usrEmail = document.getElementById("signup-form-email").value.trim();
+    let usrPassword = document.getElementById("signup-form-password").value.trim();
+    let verifyUsrPassword = document.getElementById("signup-form-password-confirm").value.trim();
 
     if (verifyUsrPassword === usrPassword) {
         firebase.auth().createUserWithEmailAndPassword(usrEmail, usrPassword).catch(function (error) {
@@ -159,3 +159,26 @@ function login() {
 function logout() {
     firebase.auth().signOut();
 }
+
+$(document).on('click', '#signup-form-submit', function(event) {
+    event.preventDefault();
+    newUser();
+    hideSignupModal();
+})
+
+$(document).on('click', '#login-form-submit', function(event) {
+    event.preventDefault();
+    login();
+    hideLoginModal();
+})
+
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        // User is signed in.
+       email = user.email;
+        alert(email);
+    } else {
+        // No user is signed in.
+        
+    }
+});
