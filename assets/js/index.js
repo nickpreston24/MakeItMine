@@ -1,9 +1,10 @@
 var resultsArr = [];
 const apiKey = "38d3947a3f2af312047999390586a0ad";
+const appID = "2ff8e6f6";
 
 function recipeSearch(searchParam) {
     $.ajax({
-        url: `https://api.edamam.com/search?q=${searchParam}&app_id=2ff8e6f6&app_key=${apiKey}`,
+        url: `https://api.edamam.com/search?q=${searchParam}&app_id=${appID}&app_key=${apiKey}`,
         method: 'get'
     }).then(function (response) {
 
