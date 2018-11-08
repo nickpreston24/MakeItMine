@@ -168,7 +168,7 @@ article {
     
 }
 
-#search-form input[type=submit] {
+#search-form input[type=submit], button {
     position: relative;
     padding: 12px 20px;
     width: 100px;
@@ -181,11 +181,11 @@ article {
     transition-duration: .3s;
 }
 
-#search-form input[type=submit]:focus {
+#search-form input[type=submit]:focus, button:focus {
     outline: none;
 }
 
-#search-form input[type=submit]:active {
+#search-form input[type=submit]:active, button:active {
     transform: scale(.95);
     box-shadow: none;
 }
