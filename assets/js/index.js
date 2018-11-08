@@ -8,23 +8,23 @@ function recipeSearch(searchParam) {
         method: 'get'
     }).then(function (response) {
 
-        console.log(response.hits.length);
+        // console.log(response.hits.length);
         $("#recipe-info").html('')
         var results = response.hits;
 
 
         results.forEach(function (recipe, i) {
-            console.log("results " + recipe.recipe.label);
-            console.log({
-                recipe,
-                i
-            })
+            // console.log("results " + recipe.recipe.label);
+            // console.log({
+                // recipe,
+                // i
+            // })
 
 
 
 
-            console.log("recipe " + recipe.recipe.url);
-            console.log("ingredients " + recipe.recipe.ingredientLines);
+            // console.log("recipe " + recipe.recipe.url);
+            // console.log("ingredients " + recipe.recipe.ingredientLines);
 
             var recipeVar = $("<div>");
             recipeVar.addClass("recipe-div")
@@ -84,7 +84,7 @@ const render = function (urlVar, ingredientVar, nameVar, imgVar) {
     `);
 
     let ingredientlist = JSON.parse(ingredientVar);
-    console.log(ingredientlist);
+    // console.log(ingredientlist);
 
     for (let val of ingredientlist) {
         $("#recipe-view-list").append(`
