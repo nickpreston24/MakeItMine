@@ -2,27 +2,27 @@ var resultsArr = [];
 
 function recipeSearch(searchParam) {
     $.ajax({
-        url: `https://api.edamam.com/search?q=${searchParam}&app_id=2ff8e6f6&app_key=38d3947a3f2af312047999390586a0ad&health=kosher`,
+        url: `https://api.edamam.com/search?q=${searchParam}&app_id=2ff8e6f6&app_key=38d3947a3f2af312047999390586a0ad`,
         method: 'get'
     }).then(function (response) {
 
-        console.log(response.hits.length);
+        // console.log(response.hits.length);
         $("#recipe-info").html('')
         var results = response.hits;
 
 
         results.forEach(function (recipe, i) {
-            console.log("results " + recipe.recipe.label);
-            console.log({
-                recipe,
-                i
-            })
+            // console.log("results " + recipe.recipe.label);
+            // console.log({
+                // recipe,
+                // i
+            // })
 
 
 
 
-            console.log("recipe " + recipe.recipe.url);
-            console.log("ingredients " + recipe.recipe.ingredientLines);
+            // console.log("recipe " + recipe.recipe.url);
+            // console.log("ingredients " + recipe.recipe.ingredientLines);
 
             var recipeVar = $("<div>");
             recipeVar.addClass("recipe-div")
@@ -82,7 +82,7 @@ const render = function(urlVar, ingredientVar, nameVar, imgVar){
     `);
   
     let ingredientlist = JSON.parse(ingredientVar);
-    console.log(ingredientlist);
+    // console.log(ingredientlist);
 
     for (let val of ingredientlist) {
         $("#recipe-view-list").append(`
@@ -98,7 +98,7 @@ const render = function(urlVar, ingredientVar, nameVar, imgVar){
 }
 
 $(document).on("click",".recipe-div", function(event){
-    console.log("render clicked");
+    // console.log("render clicked");
     var target = $(event.currentTarget);
     render(target.attr("href"), target.attr("ingredients"), target.attr('label'), target.attr('data-img-src'));
 })

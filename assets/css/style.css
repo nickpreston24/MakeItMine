@@ -47,6 +47,26 @@
     to {right: -100%; opacity: 0}
 }
 
+.animate-modal-out {
+    animation-name: animate-modal-out;
+    animation-duration: 0.3s;
+}
+
+.animate-modal-in {
+    animation-name: animate-modal-in;
+    animation-duration: 0.3s;
+}
+
+@keyframes animate-modal-out {
+    from {top: 0; opacity: 0}
+    to {top: 10%; opacity: 1}
+}
+
+@keyframes animate-modal-in {
+    from {top: 10%; opacity: 1}
+    to {top: 0; opacity: 0}
+}
+
 #login-form-div, #signup-form-div {
     margin: 20px;
     background-color: #EEEFD0;
@@ -227,7 +247,34 @@ article {
     text-align: left;
 }
 
+#recipe-view-div {
+    position: relative;
+}
 
+#text-area-div {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.363);
+    z-index: 4;
+}
+
+#text-area-modal {
+    position: absolute;
+    width: 100%;
+    padding: 15px 0px;
+    background-color: #eeefd0;
+    top: 10%;
+}
+
+#add-note-area {
+    width: 100%;
+    padding: 2px;
+    /* margin: 5px; */
+    box-sizing: border-box;
+    resize: vertical;
+    height: 100px;
+}
 
 footer {
     position: absolute;
