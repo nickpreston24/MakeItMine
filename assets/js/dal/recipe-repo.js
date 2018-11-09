@@ -17,20 +17,24 @@ var config = {
     messagingSenderId: "373815431363"
 };
 
+const userIDWarning = 'recipe must have a valid UserID!';
 const userRecipesPath = '/user-recipes/'; //>> recipes is a public collection.
 const recipesPath = '/recipes/'; //>> user-recipes is an index of users -> recipe.
 
 firebase.initializeApp(config);
 
-let recipeRepo = class {
+class recipeRepo {
 
     constructor(userID) {
+
+        if (!userID) throw Error('given userID cannot be null!');
+
         this.userID = userID;
         this.db = firebase.database();
         this.root = this.db.ref();
         this.recipes = this.db.ref(recipesPath);
         this.userRecipes = this.db.ref(userRecipesPath);
-        // this.seed() //dev-only, todo: delete after freeze
+
     }
 
     /**
@@ -69,7 +73,7 @@ let recipeRepo = class {
     add(recipe) {
 
         if (!this.userID)
-            throw Error('recipe must have a valid UserID!');
+            throw Error(userIDWarning);
 
         if (hasNull(recipe))
             throw Error('recipe cannot have null values!');
@@ -88,7 +92,7 @@ let recipeRepo = class {
     write(name, ingredients, directions, starred) {
 
         if (!this.userID)
-            throw Error('User ID could not be found!  Aborting write..');
+            throw Error(userIDWarning);
 
         if (!Array.isArray(ingredients))
             ingredients = [ingredients];
@@ -125,6 +129,9 @@ let recipeRepo = class {
      */
     async find(uniqueId) {
 
+        if (!this.userID)
+            throw Error(userIDWarning);
+
         let recipePromise = new Promise((resolve, reject) => {
             this.recipes.child(uniqueId).once("value").then(function (snapshot) {
                 const data = snapshot.val();
@@ -141,6 +148,9 @@ let recipeRepo = class {
      * @param {*} predicate 
      */
     async get(predicate) {
+
+        if (!this.userID)
+            throw Error(userIDWarning);
 
         let recipePromise = new Promise((resolve, reject) => {
             this.recipes.once("value").then(function (snapshot) {
@@ -162,12 +172,19 @@ let recipeRepo = class {
      * 
      * @param {*} recipe 
      */
-    async ammend(recipe) {
+    async amend(recipe) {
 
+        if (!this.userID)
+            throw Error(userIDWarning);
+
+        let uid = this.userID;
+        console.log('userID before snap:', this.userID, uid);
         let updatePromise = new Promise((resolve, reject) => {
             this.userRecipes.child(this.userID).once("value").then(function (snapshot) {
                 const data = snapshot.val();
-                data ? resolve(data) : reject(`user-recipe of id ${this.userID} not found!`);
+                console.log('userID after snap:', uid);
+                // console.log('userID after snap:', this.userID);
+                data ? resolve(data) : reject(`user-recipe of id ${uid} not found!`);
             })
         })
 
@@ -184,6 +201,9 @@ let recipeRepo = class {
      * @param {*} recipe 
      */
     async remove(recipe) {
+
+        if (!this.userID)
+            throw Error(userIDWarning);
 
         throw new Error("Not implemented!");
     }

@@ -3,6 +3,8 @@ const apiKey = "38d3947a3f2af312047999390586a0ad";
 const appID = "2ff8e6f6";
 var auth = firebase.auth();
 var userID;
+var repo;
+var currentRecipe;
 
 /**
  * Recipe Search
@@ -55,7 +57,7 @@ function recipeSearch(searchParam) {
 /**
  * Render Recipe Results
  */
-const render = function (urlVar, ingredients, label, image) {
+const render = function (url, ingredients, label, image) {
 
     $("#recipe-view-name").html('');
     $("#recipe-view-img").html('');
@@ -68,7 +70,7 @@ const render = function (urlVar, ingredients, label, image) {
     `);
 
     $("#recipe-view-instructions").append(`
-        <a href=${urlVar} target='_blank'>View Instructions</a>
+        <a href=${url} target='_blank'>View Instructions</a>
     `);
 
     let ingredientlist = JSON.parse(ingredients);
@@ -87,9 +89,22 @@ const render = function (urlVar, ingredients, label, image) {
 }
 
 $(document).on("click", ".recipe-div", function (event) {
-    console.log("render clicked");
+
     var target = $(event.currentTarget);
-    render(target.attr("href"), target.attr("ingredients"), target.attr('label'), target.attr('data-img-src'));
+
+    let url = target.attr("href");
+    let ingredients = target.attr("ingredients")
+    let label = target.attr('label')
+    let image = target.attr('data-img-src');
+
+    currentRecipe = {
+        name: label,
+        ingredients,
+        url,
+        userID,
+    }
+
+    render(url, ingredients, label, image);
 })
 
 /**
@@ -122,6 +137,7 @@ async function newUser() {
         auth.createUserWithEmailAndPassword(usrEmail, usrPassword)
             .then(function (result) {
                 userID = result.user.uid;
+                repo = new recipeRepo(userID);
                 removeSignupModal();
             })
             .catch(function (error) {
@@ -156,6 +172,8 @@ function login() {
             } = result.user;
 
             userID = uid;
+            repo = new recipeRepo(userID);
+            removeLoginModal();
         })
         .catch(function (error) {
 
@@ -171,4 +189,11 @@ function login() {
  */
 function logout() {
     auth.signOut();
+}
+
+function update(recipe) {
+    console.log('repo: ', repo);
+    if (!repo) repo = new recipeRepo(userID);
+    console.log('amending recipe: ', recipe);
+    repo.amend(recipe).then(result => console.log('amend success!', result));
 }
