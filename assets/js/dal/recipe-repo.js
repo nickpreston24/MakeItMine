@@ -132,7 +132,7 @@ class recipeRepo {
         if (!this.userID)
             throw Error(userIDWarning);
 
-        let recipePromise = new Promise((resolve, reject) => {
+        let recipePromise = new Promise(function(resolve, reject) {
             this.recipes.child(uniqueId).once("value").then(function (snapshot) {
                 const data = snapshot.val();
                 data ? resolve(data) : reject(`recipe with id ${uniqueId} not found!`);
@@ -152,7 +152,7 @@ class recipeRepo {
         if (!this.userID)
             throw Error(userIDWarning);
 
-        let recipePromise = new Promise((resolve, reject) => {
+        let recipePromise = new Promise(function (resolve, reject) {
             this.recipes.once("value").then(function (snapshot) {
                 const data = snapshot.val();
                 data ? resolve(data) : reject("recipes not found!")
@@ -179,7 +179,7 @@ class recipeRepo {
 
         let uid = this.userID;
         console.log('userID before snap:', this.userID, uid);
-        let updatePromise = new Promise((resolve, reject) => {
+        let updatePromise = new Promise(function(resolve, reject){
             this.userRecipes.child(this.userID).once("value").then(function (snapshot) {
                 const data = snapshot.val();
                 console.log('userID after snap:', uid);

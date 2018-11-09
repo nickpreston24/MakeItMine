@@ -44,6 +44,6 @@ repo.ammend(recipe);
 recipe.starred = true;
 repo.ammend(recipe);
 
-repo.get(recipe => recipe.name !== "fireball sushi").then(result => console.log(result));
-repo.get(recipe => recipe.starred).then(result => console.log(result));
-repo.get().then(results => console.log(results))
+repo.get(function(recipe){recipe.name !== "fireball sushi"}).then(function(result){console.log(result)});
+repo.get(function(recipe) {recipe.starred}).then(function(result) {console.log(result)});
+repo.get().then(function(results) {console.log(results)})
