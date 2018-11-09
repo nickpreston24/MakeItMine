@@ -1,28 +1,23 @@
 var resultsArr = [];
+const apiKey = "38d3947a3f2af312047999390586a0ad";
+const appID = "2ff8e6f6";
+var auth = firebase.auth();
+var userID;
 
+/**
+ * Recipe Search
+ * @param {string} searchParam 
+ */
 function recipeSearch(searchParam) {
     $.ajax({
-        url: `https://api.edamam.com/search?q=${searchParam}&app_id=2ff8e6f6&app_key=38d3947a3f2af312047999390586a0ad`,
+        url: `https://api.edamam.com/search?q=${searchParam}&app_id=${appID}&app_key=${apiKey}`,
         method: 'get'
     }).then(function (response) {
 
-        console.log(response.hits.length);
         $("#recipe-info").html('')
         var results = response.hits;
 
-
         results.forEach(function (recipe, i) {
-            console.log("results " + recipe.recipe.label);
-            console.log({
-                recipe,
-                i
-            })
-
-
-
-
-            console.log("recipe " + recipe.recipe.url);
-            console.log("ingredients " + recipe.recipe.ingredientLines);
 
             var recipeVar = $("<div>");
             recipeVar.addClass("recipe-div")
@@ -50,46 +45,40 @@ function recipeSearch(searchParam) {
             recipeVar.attr('data-img-src', imgSrc);
             recipeVar.val(recipe.recipe.label);
 
-
-
-            //append recipeVar to #recipe-info
-            
             $("#recipe-info").append(recipeVar)
 
-
-
         })
-
-
 
     })
 };
 
-const render = function(urlVar, ingredientVar, nameVar, imgVar){
-    // console.log(JSON.parse(urlVar));
+/**
+ * Render Recipe Results
+ */
+const render = function (urlVar, ingredients, label, image) {
+
     $("#recipe-view-name").html('');
     $("#recipe-view-img").html('');
     $("#recipe-view-instructions").html('');
     $("#recipe-view-list").html('');
 
-    $("#recipe-view-name").append(nameVar);
+    $("#recipe-view-name").append(label);
     $("#recipe-view-img").append(`
-        <img src="${imgVar}" alt="${nameVar}">
+        <img src="${image}" alt="${label}">
     `);
 
     $("#recipe-view-instructions").append(`
         <a href=${urlVar} target='_blank'>View Instructions</a>
     `);
-  
-    let ingredientlist = JSON.parse(ingredientVar);
-    console.log(ingredientlist);
+
+    let ingredientlist = JSON.parse(ingredients);
 
     for (let val of ingredientlist) {
         $("#recipe-view-list").append(`
             <li>${val}</li>
         `);
     }
-    // console.log(ingredientVar);
+
     $("#recipe-info").hide();
     $("#search-form").hide();
     $("#recipe-view-div").show();
@@ -97,13 +86,15 @@ const render = function(urlVar, ingredientVar, nameVar, imgVar){
 
 }
 
-$(document).on("click",".recipe-div", function(event){
+$(document).on("click", ".recipe-div", function (event) {
     console.log("render clicked");
     var target = $(event.currentTarget);
     render(target.attr("href"), target.attr("ingredients"), target.attr('label'), target.attr('data-img-src'));
 })
 
-
+/**
+ * Run Search
+ */
 $(document).on('click', '#recipe-search-btn', function (event) {
     event.preventDefault();
 
@@ -112,4 +103,72 @@ $(document).on('click', '#recipe-search-btn', function (event) {
     recipeSearch(recipeParam);
 })
 
+/**
+ * Submit login
+ */
+$(document).on('click', '#login-form-submit', login);
+$(document).on('click', '#signup-form-submit', newUser);
 
+/**
+ * Create New User
+ */
+async function newUser() {
+
+    let usrEmail = document.getElementById("signup-form-email").value
+    let usrPassword = document.getElementById("signup-form-password").value
+    let verifyUsrPassword = document.getElementById("signup-form-password-confirm").value
+
+    if (verifyUsrPassword === usrPassword) {
+        auth.createUserWithEmailAndPassword(usrEmail, usrPassword)
+            .then(function (result) {
+                userID = result.user.uid;
+                removeSignupModal();
+            })
+            .catch(function (error) {
+
+                var errorCode = error.code;
+                var errorMessage = error.message;
+
+                window.alert(`${errorMessage} error code: ${errorCode}`);
+            });
+    } else {
+        window.alert('Passwords Do Not Match');
+    };
+
+}
+
+/**
+ * Login the User
+ */
+function login() {
+
+    let usrEmail = document.getElementById("login-form-email").value
+    let usrPassword = document.getElementById("login-form-password").value
+
+    document.getElementById("login-form-email").value = '';
+    document.getElementById("login-form-password").value = '';
+
+    auth.signInWithEmailAndPassword(usrEmail, usrPassword)
+        .then(function (result) {
+
+            let {
+                uid
+            } = result.user;
+
+            userID = uid;
+        })
+        .catch(function (error) {
+
+            var errorCode = error.code;
+            var errorMessage = error.message;
+
+            window.alert(`${errorMessage} error code: ${errorCode}`);
+        });
+}
+
+/**
+ * Log Out a User
+ */
+function logout() {
+    auth.signOut();
+}

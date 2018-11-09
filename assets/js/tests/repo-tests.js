@@ -1,3 +1,7 @@
+/*	Author: Michael Preston
+ *	Created Date: "11-04-2018" 
+ */
+
 /**
  * Tests
  * Uncomment to use individual tests as part of the pre-loaded JS.
@@ -37,6 +41,9 @@ recipe = {
 
 repo.ammend(recipe);
 
-repo.get(recipe => recipe.prepTime > "00:16").then(result => console.log(result));
+recipe.starred = true;
+repo.ammend(recipe);
+
 repo.get(recipe => recipe.name !== "fireball sushi").then(result => console.log(result));
+repo.get(recipe => recipe.starred).then(result => console.log(result));
 repo.get().then(results => console.log(results))
