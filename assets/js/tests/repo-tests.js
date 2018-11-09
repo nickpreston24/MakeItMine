@@ -6,11 +6,10 @@
  * Tests
  * Uncomment to use individual tests as part of the pre-loaded JS.
  */
+const testUID = "elSj3E7klfTPxWcyBNE4JzYCfek1";
+var testrepo = new recipeRepo(testUID);
 
-const testUID = "fUEW2E8w94PmgMks6GIoRPnl9N03";
-let repo = new recipeRepo(testUID);
-
-repo.write(
+testrepo.write(
     "Macaroni & cheez",
     ["macaroni", "cheese"],
     "Melt cheese on stovetop, cook elbow pasta for 4 mins in boiling water. Pour cheese onto elbow pasta",
@@ -18,7 +17,7 @@ repo.write(
     "00:05",
 )
 
-let recipe = {
+var recipe = {
     name: "chicken marsala",
     ingredients: ["chicken", "sause", "cheese"],
     directions: `Put the chicken breasts side by side on a cutting board and lay a piece of plastic wrap over them; pound with a flat meat mallet, until they are about 1/4-inch thick. Put some flour in a shallow platter and season with a fair amount of salt and pepper; mix with a fork to distribute evenly.
@@ -29,7 +28,7 @@ Lower the heat to medium and add the prosciutto to the drippings in the pan, sau
 };
 
 recipe.uid = testUID;
-repo.add(recipe);
+testrepo.add(recipe);
 
 recipe = {
     name: "chicken marsala",
@@ -39,11 +38,23 @@ recipe = {
     cookTime: "01:23",
 };
 
-repo.ammend(recipe);
+testrepo.amend(recipe);
 
 recipe.starred = true;
-repo.ammend(recipe);
+testrepo.amend(recipe);
 
-repo.get(recipe => recipe.name !== "fireball sushi").then(result => console.log(result));
-repo.get(recipe => recipe.starred).then(result => console.log(result));
-repo.get().then(results => console.log(results))
+testrepo.get(function (recipe) {
+    recipe.name !== "fireball sushi"
+}).then(function (result) {
+    console.log(result)
+});
+testrepo.get(function (recipe) {
+    recipe.starred
+}).then(function (result) {
+    console.log(result)
+});
+testrepo.get().then(function (results) {
+    console.log(results)
+})
+
+testrepo.write("tomato soup", "tomatoes", "blah", true);

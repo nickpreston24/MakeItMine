@@ -3,7 +3,7 @@ const apiKey = "38d3947a3f2af312047999390586a0ad";
 const appID = "2ff8e6f6";
 var auth = firebase.auth();
 var userID;
-var repo;
+var recipesDB;
 var currentRecipe;
 
 /**
@@ -73,9 +73,9 @@ const render = function (url, ingredients, label, image) {
         <a href=${url} target='_blank'>View Instructions</a>
     `);
 
-    let ingredientlist = JSON.parse(ingredients);
+    var ingredientlist = JSON.parse(ingredients);
 
-    for (let val of ingredientlist) {
+    for (var val of ingredientlist) {
         $("#recipe-view-list").append(`
             <li>${val}</li>
         `);
@@ -92,10 +92,10 @@ $(document).on("click", ".recipe-div", function (event) {
 
     var target = $(event.currentTarget);
 
-    let url = target.attr("href");
-    let ingredients = target.attr("ingredients")
-    let label = target.attr('label')
-    let image = target.attr('data-img-src');
+    var url = target.attr("href");
+    var ingredients = target.attr("ingredients")
+    var label = target.attr('label')
+    var image = target.attr('data-img-src');
 
     currentRecipe = {
         name: label,
@@ -104,6 +104,7 @@ $(document).on("click", ".recipe-div", function (event) {
         userID,
     }
 
+    recipesDB.
     render(url, ingredients, label, image);
 })
 
@@ -113,7 +114,7 @@ $(document).on("click", ".recipe-div", function (event) {
 $(document).on('click', '#recipe-search-btn', function (event) {
     event.preventDefault();
 
-    let recipeParam = $('#recipe-search').val().trim();
+    var recipeParam = $('#recipe-search').val().trim();
     $('#recipe-search').val('');
     recipeSearch(recipeParam);
 })
@@ -129,16 +130,16 @@ $(document).on('click', '#signup-form-submit', newUser);
  */
 async function newUser() {
 
-    let usrEmail = document.getElementById("signup-form-email").value
-    let usrPassword = document.getElementById("signup-form-password").value
-    let verifyUsrPassword = document.getElementById("signup-form-password-confirm").value
+    var usrEmail = document.getElementById("signup-form-email").value
+    var usrPassword = document.getElementById("signup-form-password").value
+    var verifyUsrPassword = document.getElementById("signup-form-password-confirm").value
 
     if (verifyUsrPassword === usrPassword) {
         auth.createUserWithEmailAndPassword(usrEmail, usrPassword)
             .then(function (result) {
                 userID = result.user.uid;
-                repo = new recipeRepo(userID);
-                removeSignupModal();
+                recipesDB = new recipeRepo(userID);
+                hideSignupModal();
             })
             .catch(function (error) {
 
@@ -158,8 +159,8 @@ async function newUser() {
  */
 function login() {
 
-    let usrEmail = document.getElementById("login-form-email").value
-    let usrPassword = document.getElementById("login-form-password").value
+    var usrEmail = document.getElementById("login-form-email").value
+    var usrPassword = document.getElementById("login-form-password").value
 
     document.getElementById("login-form-email").value = '';
     document.getElementById("login-form-password").value = '';
@@ -167,20 +168,20 @@ function login() {
     auth.signInWithEmailAndPassword(usrEmail, usrPassword)
         .then(function (result) {
 
-            let {
+            var {
                 uid
             } = result.user;
 
             userID = uid;
-            repo = new recipeRepo(userID);
-            removeLoginModal();
+            recipesDB = new recipeRepo(userID);
         })
         .catch(function (error) {
 
             var errorCode = error.code;
             var errorMessage = error.message;
-
-            window.alert(`${errorMessage} error code: ${errorCode}`);
+            var fullMessage = "" + errorMessage + " \nError code: " + errorCode + ""
+            console.log(fullMessage);
+            window.alert(fullMessage);
         });
 }
 
@@ -192,8 +193,10 @@ function logout() {
 }
 
 function update(recipe) {
-    console.log('repo: ', repo);
-    if (!repo) repo = new recipeRepo(userID);
+    console.log('repo: ', recipesDB);
+    if (!recipesDB) recipesDB = new recipeRepo(userID);
     console.log('amending recipe: ', recipe);
-    repo.amend(recipe).then(result => console.log('amend success!', result));
+    recipesDB.amend(recipe).then(function (result) {
+        console.log('amend success!', result)
+    });
 }
