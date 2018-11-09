@@ -46,7 +46,7 @@ class recipeRepo {
         this.recipes.remove();
         this.userRecipes.remove();
 
-        let seedData = {
+        var seedData = {
             name: "fireball sushi",
             ingredients: ["mahi-mahi", "sriracha sauce", "muenster cheese", "pepper", "rice vinegar", "soy sauce", "sushi rice"],
             directions: `            
@@ -78,7 +78,7 @@ class recipeRepo {
         if (hasNull(recipe))
             throw Error('recipe cannot have null values!');
 
-        let newRecipeKey = this.recipes.push().key;
+        var newRecipeKey = this.recipes.push().key;
 
         return this.performUpdates(newRecipeKey, recipe);
     }
@@ -132,7 +132,7 @@ class recipeRepo {
         if (!this.userID)
             throw Error(userIDWarning);
 
-        let recipePromise = new Promise(function(resolve, reject) {
+        var recipePromise = new Promise(function (resolve, reject) {
             this.recipes.child(uniqueId).once("value").then(function (snapshot) {
                 const data = snapshot.val();
                 data ? resolve(data) : reject(`recipe with id ${uniqueId} not found!`);
@@ -152,15 +152,17 @@ class recipeRepo {
         if (!this.userID)
             throw Error(userIDWarning);
 
-        let recipePromise = new Promise(function (resolve, reject) {
-            this.recipes.once("value").then(function (snapshot) {
+        var that = this;
+
+        var recipePromise = new Promise(function (resolve, reject) {
+            that.recipes.once("value").then(function (snapshot) {
                 const data = snapshot.val();
                 data ? resolve(data) : reject("recipes not found!")
             })
         })
 
-        let result = await recipePromise;
-        let entries = Object.entries(result).map(e => e[1]);
+        var result = await recipePromise;
+        var entries = Object.entries(result).map(e => e[1]);
         result = null;
 
         return predicate ? entries.filter(predicate) : entries;
@@ -177,20 +179,18 @@ class recipeRepo {
         if (!this.userID)
             throw Error(userIDWarning);
 
-        let uid = this.userID;
-        console.log('userID before snap:', this.userID, uid);
-        let updatePromise = new Promise(function(resolve, reject){
-            this.userRecipes.child(this.userID).once("value").then(function (snapshot) {
+        var that = this;
+
+        var updatePromise = new Promise(function (resolve, reject) {
+            that.userRecipes.child(that.userID).once("value").then(function (snapshot) {
                 const data = snapshot.val();
-                console.log('userID after snap:', uid);
-                // console.log('userID after snap:', this.userID);
-                data ? resolve(data) : reject(`user-recipe of id ${uid} not found!`);
+                data ? resolve(data) : reject(`user-recipe of id ${that.userID} not found!`);
             })
         })
 
-        let result = await updatePromise;
-        let entries = Object.entries(result).map(e => e);
-        let recipeId = entries.filter(e => e[1] === recipe.name).map(e => e[0])[0];
+        var result = await updatePromise;
+        var entries = Object.entries(result).map(e => e);
+        var recipeId = entries.filter(e => e[1] === recipe.name).map(e => e[0])[0];
 
         this.performUpdates(recipeId, recipe);
     }

@@ -58,19 +58,19 @@ function hideSignupModal() {
     }), 250);
 }
 
-function removeSignupModal() {
-    $('#signup-form-div').addClass('animate-modal-in').removeClass('animate-modal-out');
-    setTimeout((function () {
-        $('#signup-modal').remove();
-    }), 250);
-}
+// function removeSignupModal() {
+//     $('#signup-form-div').addClass('animate-modal-in').removeClass('animate-modal-out');
+//     setTimeout((function () {
+//         $('#signup-modal').remove();
+//     }), 250);
+// }
 
-function removeLoginModal() {
-    $('#login-form-div').addClass('animate-modal-in').removeClass('animate-modal-out');
-    setTimeout((function () {
-        $('#login-modal').remove();
-    }), 250);
-}
+// function removeLoginModal() {
+//     $('#login-form-div').addClass('animate-modal-in').removeClass('animate-modal-out');
+//     setTimeout((function () {
+//         $('#login-modal').remove();
+//     }), 250);
+// }
 
 //hides the signup modal when cancel is clicked
 $(document).on('click', '#cancel-signup', hideSignupModal)
@@ -92,7 +92,7 @@ $(document).on('click', '#confirm-note-button', function () {
         return;
     }
     //todo: call amend here?
-    let amendment = $("#add-note-area").val()
+    var amendment = $("#add-note-area").val()
     $("#recipe-view-list").text(amendment);
     console.log("AMEND" + amendment);
 
@@ -132,7 +132,7 @@ $(document).on('click', '#login-form-submit', function (event) {
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         // User is signed in.
-        email = user.email;
+        // email = user.email;
         // alert(email);
     } else {
         // No user is signed in.
