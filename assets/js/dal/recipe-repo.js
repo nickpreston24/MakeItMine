@@ -13,7 +13,7 @@ var config = {
     authDomain: "make-it-mine.firebaseapp.com",
     databaseURL: "https://make-it-mine.firebaseio.com",
     projectId: "make-it-mine",
-    storageBucket: "",
+    storageBucket: "make-it-mine.appspot.com",
     messagingSenderId: "373815431363"
 };
 
@@ -60,7 +60,7 @@ class recipeRepo {
             userID: testUID
         };
 
-        let newRecipeKey = this.recipes.push().key;
+        var newRecipeKey = this.recipes.push().key;
 
         return this.performUpdates(newRecipeKey, seedData);
     }

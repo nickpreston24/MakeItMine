@@ -163,7 +163,6 @@ function login() {
 
     document.getElementById("login-form-email").value = '';
     document.getElementById("login-form-password").value = '';
-    console.log(usrEmail, usrPassword)
 
     auth.signInWithEmailAndPassword(usrEmail, usrPassword)
         .then(function (result) {
@@ -174,7 +173,6 @@ function login() {
 
             userID = uid;
             testrepo = new recipeRepo(userID);
-            hideLoginModal();
         })
         .catch(function (error) {
 
