@@ -1,6 +1,8 @@
 var resultsArr = [];
 const apiKey = "38d3947a3f2af312047999390586a0ad";
 const appID = "2ff8e6f6";
+var auth = firebase.auth();
+var userID;
 
 /**
  * Recipe Search
@@ -53,23 +55,23 @@ function recipeSearch(searchParam) {
 /**
  * Render Recipe Results
  */
-const render = function (urlVar, ingredientVar, nameVar, imgVar) {
+const render = function (urlVar, ingredients, label, image) {
 
     $("#recipe-view-name").html('');
     $("#recipe-view-img").html('');
     $("#recipe-view-instructions").html('');
     $("#recipe-view-list").html('');
 
-    $("#recipe-view-name").append(nameVar);
+    $("#recipe-view-name").append(label);
     $("#recipe-view-img").append(`
-        <img src="${imgVar}" alt="${nameVar}">
+        <img src="${image}" alt="${label}">
     `);
 
     $("#recipe-view-instructions").append(`
         <a href=${urlVar} target='_blank'>View Instructions</a>
     `);
 
-    let ingredientlist = JSON.parse(ingredientVar);
+    let ingredientlist = JSON.parse(ingredients);
 
     for (let val of ingredientlist) {
         $("#recipe-view-list").append(`
@@ -102,15 +104,21 @@ $(document).on('click', '#recipe-search-btn', function (event) {
 })
 
 /**
+ * Submit login
+ */
+$(document).on('click', '#login-form-submit', login);
+
+/**
  * Create New User
  */
 function newUser() {
-    let usrEmail = document.getElementById("signup-form-email").value.trim();
-    let usrPassword = document.getElementById("signup-form-password").value.trim();
-    let verifyUsrPassword = document.getElementById("signup-form-password-confirm").value.trim();
+
+    let usrEmail = document.getElementById("signup-form-email").value
+    let usrPassword = document.getElementById("signup-form-password").value
+    let verifyUsrPassword = document.getElementById("signup-form-password-confirm").value
 
     if (verifyUsrPassword === usrPassword) {
-        firebase.auth().createUserWithEmailAndPassword(usrEmail, usrPassword).catch(function (error) {
+        auth.createUserWithEmailAndPassword(usrEmail, usrPassword).catch(function (error) {
 
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -123,6 +131,9 @@ function newUser() {
 
 }
 
+/**
+ * Login the User
+ */
 function login() {
 
     let usrEmail = document.getElementById("login-form-email").value
@@ -131,38 +142,27 @@ function login() {
     document.getElementById("login-form-email").value = '';
     document.getElementById("login-form-password").value = '';
 
-    firebase.auth().signInWithEmailAndPassword(usrEmail, usrPassword).catch(function (error) {
+    auth.signInWithEmailAndPassword(usrEmail, usrPassword)
+        .then(function (result) {
 
-        var errorCode = error.code;
-        var errorMessage = error.message;
+            let {
+                uid
+            } = result.user;
 
-        window.alert(`${errorMessage} error code: ${errorCode}`);
-    });
+            userID = uid;
+        })
+        .catch(function (error) {
+
+            var errorCode = error.code;
+            var errorMessage = error.message;
+
+            window.alert(`${errorMessage} error code: ${errorCode}`);
+        });
 }
 
+/**
+ * Log Out a User
+ */
 function logout() {
-    firebase.auth().signOut();
+    auth.signOut();
 }
-
-$(document).on('click', '#signup-form-submit', function(event) {
-    event.preventDefault();
-    newUser();
-    hideSignupModal();
-})
-
-$(document).on('click', '#login-form-submit', function(event) {
-    event.preventDefault();
-    login();
-    hideLoginModal();
-})
-
-firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-        // User is signed in.
-       email = user.email;
-        alert(email);
-    } else {
-        // No user is signed in.
-        
-    }
-});
