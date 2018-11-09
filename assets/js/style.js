@@ -23,7 +23,7 @@ $(document).on('click', '#back-arrow', function () {
     $('#back-arrow').addClass('color-none')
 })
 
-$(document).on('click', 'favorite-btn', function() {
+$(document).on('click', 'favorite-btn', function () {
     //todo: notify user w/o alert that their favorite was saved.
 })
 
@@ -63,6 +63,13 @@ function hideSignupModal() {
     $('#signup-form-div').addClass('animate-modal-in').removeClass('animate-modal-out');
     setTimeout((function () {
         $('#signup-modal').hide();
+    }), 250);
+}
+
+function removeSignupModal() {
+    $('#signup-form-div').addClass('animate-modal-in').removeClass('animate-modal-out');
+    setTimeout((function () {
+        $('#signup-modal').remove();
     }), 250);
 }
 

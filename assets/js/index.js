@@ -107,24 +107,30 @@ $(document).on('click', '#recipe-search-btn', function (event) {
  * Submit login
  */
 $(document).on('click', '#login-form-submit', login);
+$(document).on('click', '#signup-form-submit', newUser);
 
 /**
  * Create New User
  */
-function newUser() {
+async function newUser() {
 
     let usrEmail = document.getElementById("signup-form-email").value
     let usrPassword = document.getElementById("signup-form-password").value
     let verifyUsrPassword = document.getElementById("signup-form-password-confirm").value
 
     if (verifyUsrPassword === usrPassword) {
-        auth.createUserWithEmailAndPassword(usrEmail, usrPassword).catch(function (error) {
+        auth.createUserWithEmailAndPassword(usrEmail, usrPassword)
+            .then(function (result) {
+                userID = result.user.uid;
+                removeSignupModal();
+            })
+            .catch(function (error) {
 
-            var errorCode = error.code;
-            var errorMessage = error.message;
+                var errorCode = error.code;
+                var errorMessage = error.message;
 
-            window.alert(`${errorMessage} error code: ${errorCode}`);
-        });
+                window.alert(`${errorMessage} error code: ${errorCode}`);
+            });
     } else {
         window.alert('Passwords Do Not Match');
     };
