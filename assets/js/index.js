@@ -3,7 +3,7 @@ const apiKey = "38d3947a3f2af312047999390586a0ad";
 const appID = "2ff8e6f6";
 var auth = firebase.auth();
 var userID;
-var testrepo;
+var recipesDB;
 var currentRecipe;
 
 /**
@@ -103,7 +103,8 @@ $(document).on("click", ".recipe-div", function (event) {
         url,
         userID,
     }
-    //todo: send the updated recipe to the db
+
+    recipesDB.
     render(url, ingredients, label, image);
 })
 
@@ -137,7 +138,7 @@ async function newUser() {
         auth.createUserWithEmailAndPassword(usrEmail, usrPassword)
             .then(function (result) {
                 userID = result.user.uid;
-                testrepo = new recipeRepo(userID);
+                recipesDB = new recipeRepo(userID);
                 hideSignupModal();
             })
             .catch(function (error) {
@@ -172,7 +173,7 @@ function login() {
             } = result.user;
 
             userID = uid;
-            testrepo = new recipeRepo(userID);
+            recipesDB = new recipeRepo(userID);
         })
         .catch(function (error) {
 
@@ -192,10 +193,10 @@ function logout() {
 }
 
 function update(recipe) {
-    console.log('repo: ', testrepo);
-    if (!testrepo) testrepo = new recipeRepo(userID);
+    console.log('repo: ', recipesDB);
+    if (!recipesDB) recipesDB = new recipeRepo(userID);
     console.log('amending recipe: ', recipe);
-    testrepo.amend(recipe).then(function (result) {
+    recipesDB.amend(recipe).then(function (result) {
         console.log('amend success!', result)
     });
 }
