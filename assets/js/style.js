@@ -13,7 +13,9 @@ $(document).on('click', '#close-menu', function () {
 });
 
 
-
+/**
+ * Back Arrow
+ */
 $(document).on('click', '#back-arrow', function () {
     $("#recipe-info").show();
     $("#search-form").show();
@@ -21,7 +23,14 @@ $(document).on('click', '#back-arrow', function () {
     $('#back-arrow').addClass('color-none')
 })
 
+$(document).on('click', 'favorite-btn', function () {
+    //todo: notify user w/o alert that their favorite was saved.
+})
 
+$(document).on('click', 'notes-btn', function () {
+    //todo: fire event 
+
+})
 // ==============================================
 // code for modals
 // ==============================================
@@ -35,7 +44,7 @@ $(document).on('click', "#login-link", function () {
 // use this function to hide the login modal
 function hideLoginModal() {
     $('#login-form-div').addClass('animate-modal-in').removeClass('animate-modal-out');
-    setTimeout((function(){
+    setTimeout((function () {
         $('#login-modal').hide();
     }), 250);
 }
@@ -52,8 +61,15 @@ $(document).on('click', "#signup-link", function () {
 // use this function to hide the signup modal
 function hideSignupModal() {
     $('#signup-form-div').addClass('animate-modal-in').removeClass('animate-modal-out');
-    setTimeout((function(){
+    setTimeout((function () {
         $('#signup-modal').hide();
+    }), 250);
+}
+
+function removeSignupModal() {
+    $('#signup-form-div').addClass('animate-modal-in').removeClass('animate-modal-out');
+    setTimeout((function () {
+        $('#signup-modal').remove();
     }), 250);
 }
 
@@ -61,7 +77,7 @@ function hideSignupModal() {
 $(document).on('click', '#cancel-signup', hideSignupModal)
 
 // bring up add notes modal
-$(document).on('click', '#notes-btn', function() {
+$(document).on('click', '#notes-btn', function () {
     var textArea = $('#recipe-view-list').children().text();
     console.log(textArea);
     $('#add-note-area').text(textArea);
@@ -71,9 +87,9 @@ $(document).on('click', '#notes-btn', function() {
 })
 
 // hide notes modal
-$(document).on('click', '#confirm-note-button', function() {
+$(document).on('click', '#confirm-note-button', function () {
     $('#text-area-modal').addClass('animate-modal-in').removeClass('animate-modal-out');
-    setTimeout((function(){
+    setTimeout((function () {
         $('#text-area-div').hide();
     }), 250);
 })
@@ -81,5 +97,3 @@ $(document).on('click', '#confirm-note-button', function() {
 // ==============================================
 // end code for modals
 // ==============================================
-
-
