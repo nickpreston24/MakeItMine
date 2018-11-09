@@ -118,3 +118,24 @@ $(document).on('click', "#signup-link", function () {
 // ==============================================
 // end code for modals
 // ==============================================
+
+$(document).on('click', '#signup-form-submit', function (event) {
+    event.preventDefault();
+    newUser();
+    hideSignupModal();
+})
+$(document).on('click', '#login-form-submit', function (event) {
+    event.preventDefault();
+    login();
+    hideLoginModal();
+})
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        // User is signed in.
+        email = user.email;
+        // alert(email);
+    } else {
+        // No user is signed in.
+
+    }
+});

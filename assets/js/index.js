@@ -103,7 +103,7 @@ $(document).on("click", ".recipe-div", function (event) {
         url,
         userID,
     }
-
+    //todo: send the updated recipe to the db
     render(url, ingredients, label, image);
 })
 
@@ -195,5 +195,7 @@ function update(recipe) {
     console.log('repo: ', repo);
     if (!repo) repo = new recipeRepo(userID);
     console.log('amending recipe: ', recipe);
-    repo.amend(recipe).then(result => console.log('amend success!', result));
+    repo.amend(recipe).then(function (result) {
+        console.log('amend success!', result)
+    });
 }
