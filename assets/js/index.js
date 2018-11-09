@@ -104,7 +104,6 @@ $(document).on("click", ".recipe-div", function (event) {
         userID,
     }
 
-    recipesDB.
     render(url, ingredients, label, image);
 })
 
