@@ -22,17 +22,22 @@ $(document).on('click', '#back-arrow', function () {
     $('#back-arrow').addClass('color-none')
 })
 
-$(document).on('click', 'favorite-btn', function () {
-
-    // repo.get();
-
+$(document).on('click', '#favorite-btn', function () {
     //todo: notify user w/o alert that their favorite was saved.
+})
+
+$(document).on('click', '#save-btn', function () {
+    console.log('userId: ', userID);
+    console.log('repo: ', recipesDB);
+    console.log('saving...', currentRecipe);
+    recipesDB.add(currentRecipe);
 })
 
 $(document).on('click', 'notes-btn', function () {
     //todo: fire event 
 
 })
+
 // ==============================================
 // code for modals
 // ==============================================
@@ -130,7 +135,7 @@ $(document).on('click', '#login-form-submit', function (event) {
 })
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-        console.log(user)
+        // console.log(user)
         // User is signed in.
         email = user.email;
         // alert(email);
