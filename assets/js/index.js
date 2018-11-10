@@ -198,7 +198,12 @@ function update(recipe) {
     console.log('repo: ', recipesDB);
     if (!recipesDB) recipesDB = new recipeRepo(userID);
     console.log('amending recipe: ', recipe);
-    recipesDB.amend(recipe).then(function (result) {
-        console.log('amend success!', result)
-    });
+    // recipesDB.find(recipe.id) //todo: if found, amend, else add.
+    recipesDB.amend(recipe)
+        .then(function (result) {
+            console.log('amend success!', result)
+        })
+        .catch(function (error) {
+            console.log('Error: ', error);
+        });
 }

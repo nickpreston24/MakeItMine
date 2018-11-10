@@ -208,7 +208,6 @@ recipeRepo.prototype.remove = async function (recipe) {
     throw new Error("Not implemented!");
 }
 
-
 function hasNull(target) {
     for (var member in target) {
         if (target[member] == null)
