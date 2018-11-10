@@ -12,7 +12,6 @@ $(document).on('click', '#close-menu', function () {
     setTimeout(hideMenu, 300)
 });
 
-
 /**
  * Back Arrow
  */
@@ -24,6 +23,9 @@ $(document).on('click', '#back-arrow', function () {
 })
 
 $(document).on('click', 'favorite-btn', function () {
+
+    // repo.get();
+
     //todo: notify user w/o alert that their favorite was saved.
 })
 
@@ -49,16 +51,6 @@ function hideLoginModal() {
     }), 250);
 }
 
-//hides login modal when cancel is clicked
-$(document).on('click', '#cancel-login', hideLoginModal)
-
-//bring up the sign up modal
-$(document).on('click', "#signup-link", function () {
-    $('#signup-modal').show();
-    $('#signup-form-div').addClass('animate-modal-out').removeClass('animate-modal-in')
-})
-
-// use this function to hide the signup modal
 function hideSignupModal() {
     $('#signup-form-div').addClass('animate-modal-in').removeClass('animate-modal-out');
     setTimeout((function () {
@@ -66,12 +58,19 @@ function hideSignupModal() {
     }), 250);
 }
 
-function removeSignupModal() {
-    $('#signup-form-div').addClass('animate-modal-in').removeClass('animate-modal-out');
-    setTimeout((function () {
-        $('#signup-modal').remove();
-    }), 250);
-}
+// function removeSignupModal() {
+//     $('#signup-form-div').addClass('animate-modal-in').removeClass('animate-modal-out');
+//     setTimeout((function () {
+//         $('#signup-modal').remove();
+//     }), 250);
+// }
+
+// function removeLoginModal() {
+//     $('#login-form-div').addClass('animate-modal-in').removeClass('animate-modal-out');
+//     setTimeout((function () {
+//         $('#login-modal').remove();
+//     }), 250);
+// }
 
 //hides the signup modal when cancel is clicked
 $(document).on('click', '#cancel-signup', hideSignupModal)
@@ -88,12 +87,55 @@ $(document).on('click', '#notes-btn', function () {
 
 // hide notes modal
 $(document).on('click', '#confirm-note-button', function () {
+    if (!userID) {
+        alert('You must be signed in first');
+        return;
+    }
+    //todo: call amend here?
+    var amendment = $("#add-note-area").val()
+    $("#recipe-view-list").text(amendment);
+    console.log("AMEND" + amendment);
+
+    currentRecipe.directions = amendment;
+
+    update(currentRecipe);
+
     $('#text-area-modal').addClass('animate-modal-in').removeClass('animate-modal-out');
     setTimeout((function () {
         $('#text-area-div').hide();
     }), 250);
 })
 
+//hides login modal when cancel is clicked
+$(document).on('click', '#cancel-login', hideLoginModal)
+
+//bring up the sign up modal
+$(document).on('click', "#signup-link", function () {
+    $('#signup-modal').show();
+    $('#signup-form-div').addClass('animate-modal-out').removeClass('animate-modal-in')
+})
+
 // ==============================================
 // end code for modals
 // ==============================================
+
+$(document).on('click', '#signup-form-submit', function (event) {
+    event.preventDefault();
+    newUser();
+    hideSignupModal();
+})
+$(document).on('click', '#login-form-submit', function (event) {
+    event.preventDefault();
+    hideLoginModal();
+})
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        console.log(user)
+        // User is signed in.
+        email = user.email;
+        // alert(email);
+    } else {
+        // No user is signed in.
+
+    }
+});
