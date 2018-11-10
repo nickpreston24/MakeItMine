@@ -104,7 +104,7 @@ $(document).on("click", ".recipe-div", function (event) {
         userID,
     }
 
-    render(url, ingredients, label, image);
+   render(url, ingredients, label, image);
 })
 
 /**
@@ -173,6 +173,7 @@ function login() {
 
             userID = uid;
             recipesDB = new recipeRepo(userID);
+            hideLoginModal();
         })
         .catch(function (error) {
 
@@ -191,11 +192,18 @@ function logout() {
     auth.signOut();
 }
 
+$(document).on('click', '#logout-link', logout);
+
 function update(recipe) {
     console.log('repo: ', recipesDB);
     if (!recipesDB) recipesDB = new recipeRepo(userID);
     console.log('amending recipe: ', recipe);
-    recipesDB.amend(recipe).then(function (result) {
-        console.log('amend success!', result)
-    });
+    // recipesDB.find(recipe.id) //todo: if found, amend, else add.
+    recipesDB.amend(recipe)
+        .then(function (result) {
+            console.log('amend success!', result)
+        })
+        .catch(function (error) {
+            console.log('Error: ', error);
+        });
 }
