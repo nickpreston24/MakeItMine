@@ -235,7 +235,7 @@ article {
 #search-form input[type=submit], button {
     position: relative;
     padding: 12px 20px;
-    width: 100px;
+    /* width: 100px; */
     background-color: #f87d73;
     border: none;
     color: white;
@@ -295,6 +295,36 @@ article {
     position: relative;
 }
 
+#recipe-view-name {
+    color: #8b1b1f;
+    font-weight: bold;
+    font-size: 30px;
+    margin: 10px 0;
+    font-family: 'Segoe UI';
+}
+
+#recipe-view-list {
+   list-style-type: circle;
+   list-style-position: inside;
+   margin: 10px 5px; 
+}
+
+#recipe-view-list li {
+    margin: 5px 0px;
+}
+
+#recipe-view-instructions a {
+    text-decoration: none;
+    font-family: Georgia;
+    color: #597700;
+    font-size: 20px;
+    margin: 10px 0px;
+}
+
+#recipe-view-div button {
+    margin: 10px;
+}
+
 
 
 footer {
@@ -306,16 +336,9 @@ footer {
     justify-content: center;
     align-items: center;
     display: flex;
-    
 }
 
-#recipe-view-instructions a {
-    text-decoration: none;
-    font-family: Georgia;
-    color: #597700;
-    font-size: 20px;
-    
-}
+
 
 
 .recipe-name {
