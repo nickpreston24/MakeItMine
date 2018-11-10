@@ -104,8 +104,7 @@ $(document).on("click", ".recipe-div", function (event) {
         userID,
     }
 
-    recipesDB.
-    render(url, ingredients, label, image);
+   render(url, ingredients, label, image);
 })
 
 /**
@@ -174,6 +173,7 @@ function login() {
 
             userID = uid;
             recipesDB = new recipeRepo(userID);
+            hideLoginModal();
         })
         .catch(function (error) {
 
@@ -191,6 +191,8 @@ function login() {
 function logout() {
     auth.signOut();
 }
+
+$(document).on('click', '#logout-link', logout);
 
 function update(recipe) {
     console.log('repo: ', recipesDB);

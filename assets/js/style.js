@@ -58,6 +58,13 @@ function hideSignupModal() {
     }), 250);
 }
 
+function hideNotesModal() {
+    $('#text-area-modal').addClass('animate-modal-in').removeClass('animate-modal-out');
+    setTimeout((function () {
+        $('#text-area-div').hide();
+    }), 250);
+}
+
 // function removeSignupModal() {
 //     $('#signup-form-div').addClass('animate-modal-in').removeClass('animate-modal-out');
 //     setTimeout((function () {
@@ -77,9 +84,9 @@ $(document).on('click', '#cancel-signup', hideSignupModal)
 
 // bring up add notes modal
 $(document).on('click', '#notes-btn', function () {
-    var textArea = $('#recipe-view-list').children().text();
-    console.log(textArea);
-    $('#add-note-area').text(textArea);
+    // var textArea = $('#recipe-view-list').children().text();
+    // console.log(textArea);
+    // $('#add-note-area').text(textArea);
     $('#text-area-div').show();
     $('#text-area-modal').addClass('animate-modal-out').removeClass('animate-modal-in')
 
@@ -88,22 +95,35 @@ $(document).on('click', '#notes-btn', function () {
 // hide notes modal
 $(document).on('click', '#confirm-note-button', function () {
     if (!userID) {
+        hideNotesModal();
         alert('You must be signed in first');
         return;
     }
     //todo: call amend here?
-    var amendment = $("#add-note-area").val()
-    $("#recipe-view-list").text(amendment);
-    console.log("AMEND" + amendment);
+    // var amendment = $("#add-note-area").val()
+    // $("#recipe-view-list").text(amendment);
+    // console.log("AMEND" + amendment);
 
-    currentRecipe.directions = amendment;
+    // currentRecipe.directions = amendment;
 
-    update(currentRecipe);
+    // update(currentRecipe);
 
-    $('#text-area-modal').addClass('animate-modal-in').removeClass('animate-modal-out');
-    setTimeout((function () {
-        $('#text-area-div').hide();
-    }), 250);
+    // $('#text-area-modal').addClass('animate-modal-in').removeClass('animate-modal-out');
+    // setTimeout((function () {
+    // $('#text-area-div').hide();
+    // }), 250);
+    
+    var noteInput = $('#add-note-area').val().trim();
+
+    $('#recipe-view-notes').append(`
+         <p>${noteInput} <i class="material-icons added-note">close</i></p>
+    `);
+    hideNotesModal();
+})
+
+$(document).on('click', '.added-note', function () {
+    console.log($(this).parent());
+    $(this).parent().remove();
 })
 
 //hides login modal when cancel is clicked
@@ -119,23 +139,33 @@ $(document).on('click', "#signup-link", function () {
 // end code for modals
 // ==============================================
 
-$(document).on('click', '#signup-form-submit', function (event) {
-    event.preventDefault();
-    newUser();
-    hideSignupModal();
-})
-$(document).on('click', '#login-form-submit', function (event) {
-    event.preventDefault();
-    hideLoginModal();
-})
+// $(document).on('click', '#signup-form-submit', function (event) {
+// event.preventDefault();
+// newUser();
+// hideSignupModal();
+// })
+// $(document).on('click', '#login-form-submit', function (event) {
+// event.preventDefault();
+// hideLoginModal();
+// })
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         console.log(user)
         // User is signed in.
         email = user.email;
+        $('.menu').html('').append(`
+            <button id="close-menu">Close</button>
+            <a href="#" id="logout-link">Logout</a>
+            <p>${email}</p>
+        `);
+
         // alert(email);
     } else {
         // No user is signed in.
-
+        $('.menu').html('').append(`
+            <button id="close-menu">Close</button>
+            <a href="#" id="login-link">Login</a>
+            <a href="#" id="signup-link">SignUp</a>
+        `)
     }
 });
