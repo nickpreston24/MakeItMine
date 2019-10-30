@@ -25,8 +25,6 @@ firebase.initializeApp(config);
 
 const recipeRepo = function (userID) {
 
-    // constructor(userID) {
-
     if (!userID) throw Error('given userID cannot be null!');
 
     this.userID = userID;
