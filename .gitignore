@@ -3,3 +3,5 @@
 
 ## VSCODE files
 **/*.vscode
+
+**/*node_modules

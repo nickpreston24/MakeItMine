@@ -2,6 +2,27 @@
   "name": "makeitmine",
   "version": "1.0.0",
   "dependencies": {
-    
-  }
+    "next": "^9.1.2",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0"
+  },
+  "description": "You can use the [editor on GitHub](https://github.com/MikePreston17/Project1/edit/master/README.md) to maintain and preview the content for your website in Markdown files.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MikePreston17/MakeItMine.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MikePreston17/MakeItMine/issues"
+  },
+  "homepage": "https://github.com/MikePreston17/MakeItMine#readme"
 }
