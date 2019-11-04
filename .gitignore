@@ -1,0 +1,5 @@
+## Jetbrains IDEA files
+**/*.idea
+
+## VSCODE files
+**/*.vscode
