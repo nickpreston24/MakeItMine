@@ -5,7 +5,6 @@ import Recipes from './samples/recipes'
 const Index = props => {    
     return (
         <Layout>
-            {/* <Page/>             */}
             <Recipes/>
         </Layout>
     )

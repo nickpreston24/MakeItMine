@@ -1,8 +1,0 @@
-{
-  "name": "makeitmine",
-  "version": "1.0.0",
-  "dependencies": {
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0"
-  }
-}
