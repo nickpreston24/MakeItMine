@@ -2,11 +2,11 @@
   "name": "makeitmine",
   "version": "1.0.0",
   "dependencies": {
+    "isomorphic-unfetch": "^3.0.0",
     "next": "^9.1.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0"
   },
-  "description": "You can use the [editor on GitHub](https://github.com/MikePreston17/Project1/edit/master/README.md) to maintain and preview the content for your website in Markdown files.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

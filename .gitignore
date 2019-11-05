@@ -4,4 +4,10 @@
 ## VSCODE files
 **/*.vscode
 
+## Next JS
+**/*.next
+
+## Node JS
 **/*node_modules
+
+
