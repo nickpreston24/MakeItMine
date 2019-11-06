@@ -18,16 +18,14 @@ const Recipe = ({ recipe } = {}) => {
     );
 };
 
-/* TODO: fetch by Id from Neo4j
-*
-* below is a sample:
+/* 
+* Initialize
 */
-
 Recipe.getInitialProps = async function (context) {
     const id = context.query.id;
     const recipe = await recipesController.findById(id);
 
-    console.log(`Recipe # ${id}`, recipe);
+    // console.log(`Recipe # ${id}`, recipe);
     return { recipe };
 }
 

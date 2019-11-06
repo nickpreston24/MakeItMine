@@ -1,12 +1,24 @@
 import Link from 'next/link';
 //Holds the <a> for a given Recipe
 
-const RecipeLink = ({ post: recipe }) => (
-    <li>
-        <Link href="/r/[id]" as={`/r/${recipe.id}`}>
-            <a>{recipe.title}</a>
-        </Link>
-        <style jsx>{`
+const RecipeLink = ({ recipe }) => {
+
+    const { id, title } = recipe || {};
+
+    return (
+        <li>
+            {
+                id
+                    ? //Internal Link
+                    <Link href="/recipes/[id]" as={`/recipes/${id}`}>
+                        <a>{title}</a>
+                    </Link>
+                    :  //External link
+                    <a href={recipe.url}>{recipe.label}</a>
+
+            }
+
+            <style jsx>{`
             li {
                 list-style: none;
                 margin: 5px 0;
@@ -22,8 +34,9 @@ const RecipeLink = ({ post: recipe }) => (
                 opacity: 0.6;
             }
     `}</style>
-    </li>
+        </li>
 
-);
+    )
+};
 
 export default RecipeLink;

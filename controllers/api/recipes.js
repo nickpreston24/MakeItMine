@@ -26,7 +26,7 @@ export default class RecipesController {
                 session.close();
 
                 // console.log('result: ', result)
-                
+
                 if (!result.records)
                     return null;
 
@@ -133,30 +133,6 @@ export default class RecipesController {
                     console.log(error)
                 }
             })
-
-        /**
-         * Alternative sample code
-         */
-
-        // //Get a person: 
-        // const personName = 'Alice';
-        // const resultPromise = session.run(
-        //     'merge (a:Person {name: $name}) RETURN a',
-        //     { name: personName }
-        // );
-
-        // resultPromise.then(result => {
-        //     session.close();
-
-        //     const singleRecord = result.records[0];
-        //     const node = singleRecord.get(0);
-
-        //     console.log(node.properties.name);
-
-        //     // on application exit:
-        //     driver.close();
-        // });
     }
-
 }
 

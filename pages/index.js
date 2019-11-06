@@ -1,10 +1,8 @@
 import Layout from '../components/Layout';
 
-const Index = props => {
+const Index = () => {
     return (
-        <Layout>
-            <h1>Home</h1>
-        </Layout>
+        <Layout/>            
     )
 };
 
