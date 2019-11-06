@@ -1,11 +1,9 @@
 import Layout from '../components/Layout';
-// import Page from './samples/page'
-import Recipes from './samples/recipes'
 
-const Index = props => {    
+const Index = props => {
     return (
         <Layout>
-            <Recipes/>
+            <h1>Home</h1>
         </Layout>
     )
 };
