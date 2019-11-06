@@ -1,17 +1,19 @@
 import Layout from '../../components/Layout';
-import dummyData from '../data';
+import { recipesController } from '../../controllers';
 
-const Recipe = ({ recipe }) => {
-    console.log("specific recipe:", recipe);
+const Recipe = ({ recipe } = {}) => {
+
+    const { author, image, title } = recipe;
+
     return (
         <Layout>
             {recipe ?
                 <div>
-                    <h1>{recipe.name}</h1>
-                    <p>{`Created by ${recipe.author.name}`}</p>
-                    {recipe.image && <img src={recipe.image} />}
+                    <h1>{title}</h1>
+                    {author.name && <p>{`Created by ${author.name}`}</p>}
+                    {image && <img src={image} />}
                 </div>
-                : <h2>Something went wrong :(. We were not able to retreive this recipe!  Sorry about that.</h2>}
+                : <h2>Something went wrong!  We were not able to retreive this recipe, sorry about that :(</h2>}
         </Layout>
     );
 };
@@ -22,14 +24,9 @@ const Recipe = ({ recipe }) => {
 */
 
 Recipe.getInitialProps = async function (context) {
-    const { id } = context.query;
+    const id = context.query.id;
+    const recipe = await recipesController.findById(id);
 
-    /** TODO: Fetch from Neo4j */
-    // const response = await fetch()
-    // const dbData = await response.json();
-    // console.log(dbData || `No data for recipe # ${id} from neo4j.`);
-
-    let recipe = dummyData.find(recipe => recipe.id == id);
     console.log(`Recipe # ${id}`, recipe);
     return { recipe };
 }
