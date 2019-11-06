@@ -215,3 +215,5 @@ function hasNull(target) {
     }
     return false;
 }
+
+export default recipeRepo;

@@ -13,6 +13,9 @@ export default function Header() {
       <Link href="/about">
         <a style={linkStyle}>About</a>
       </Link>
+      <Link href="/recipes">
+        <a  style={linkStyle}>Recipes</a>
+      </Link>
     </div>
   )
 }
