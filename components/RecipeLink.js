@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const RecipeLink = ({ recipe }) => {
 
-    const { id, title } = recipe || {};
+    const { id, title, url } = recipe || {};
 
     return (
         <li>
@@ -14,26 +14,26 @@ const RecipeLink = ({ recipe }) => {
                         <a>{title}</a>
                     </Link>
                     :  //External link
-                    <a href={recipe.url}>{recipe.label}</a>
+                    <a href={url}>{title}</a>
 
             }
 
             <style jsx>{`
-            li {
-                list-style: none;
-                margin: 5px 0;
-            }
+                li {
+                    list-style: none;
+                    margin: 5px 0;
+                }
 
-            a {
-                text-decoration: none;
-                color: blue;
-                font-family: 'Arial';
-            }
+                a {
+                    text-decoration: none;
+                    color: blue;
+                    font-family: 'Arial';
+                }
 
-            a:hover {
-                opacity: 0.6;
-            }
-    `}</style>
+                a:hover {
+                    opacity: 0.6;
+                }
+            `}</style>
         </li>
 
     )

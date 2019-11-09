@@ -1,4 +1,4 @@
-import { Layout, RecipeLink, SearchBar } from '../../components';
+import { Layout, RecipeLink, RecipeSearchBar } from '../../components';
 import { recipesController } from '../../controllers';
 
 const Recipes = ({ recipes }) => {
@@ -9,10 +9,10 @@ const Recipes = ({ recipes }) => {
 
       <h2>Recipe Search</h2>
       
-      <SearchBar />
+      <RecipeSearchBar />
 
       <h2>Your Recipes</h2>
-      {recipes.map(recipe => <RecipeLink key={recipe.id} recipe={recipe} />)}
+      {recipes && recipes.map(recipe => <RecipeLink key={recipe.id} recipe={recipe} />)}
     </Layout>
   );
 }

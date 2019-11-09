@@ -10,7 +10,7 @@ const Recipe = ({ recipe } = {}) => {
             {recipe ?
                 <div>
                     <h1>{title}</h1>
-                    {author.name && <p>{`Created by ${author.name}`}</p>}
+                    {author && author.name && <p>{`Created by ${author.name}`}</p>}
                     {image && <img src={image} />}
                 </div>
                 : <h2>Something went wrong!  We were not able to retreive this recipe, sorry about that :(</h2>}

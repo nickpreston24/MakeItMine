@@ -1,5 +1,11 @@
 import Recipe from '../../models/Recipe';
 
+// require('dotenv').config()
+// console.log(process.env.EDAMAME_APIKEY);
+//TODO: move key to environment variables
+const apiKey = "38d3947a3f2af312047999390586a0ad";
+const appID = "2ff8e6f6";
+
 export default class RecipesController {
 
     constructor() {
@@ -23,14 +29,11 @@ export default class RecipesController {
         return session
             .run(query, { id: parseInt(recipeId) })
             .then(result => {
-                session.close();
 
-                // console.log('result: ', result)
+                session.close();
 
                 if (!result.records)
                     return null;
-
-                // console.log('found recipe: ', record)
 
                 let record = result.records[0];
 
@@ -50,7 +53,7 @@ export default class RecipesController {
             })
             .catch(error => {
                 session.close();
-                throw error;
+                // throw error;
             });
     }
 
@@ -79,7 +82,7 @@ export default class RecipesController {
             })
             .catch(error => {
                 session.close();
-                throw error;
+                // throw error;
             });
     }
 
@@ -102,37 +105,46 @@ export default class RecipesController {
                         });
                     })
 
-                // console.log('records queried', recipes);
                 return recipes;
             })
             .catch(error => {
                 session.close();
-                throw error;
+                // throw error;
             });
     }
 
-    runSampleQuery() {
-        const session = this.driver.session();
+    async searchEdamame(params) {
+        console.log(`searching for ${params}`)
 
-        // Run a Cypher statement, reading the result in a streaming manner as records arrive:
-        session
-            .run('MERGE (alice:Person {firstName : $_name}) RETURN alice.firstName AS name', {
-                _name: 'Alice'
-            })
-            .subscribe({
-                onKeys: keys => {
-                    console.log(keys)
-                },
-                onNext: record => {
-                    console.log(record.get('name'))
-                },
-                onCompleted: () => {
-                    session.close() // returns a Promise
-                },
-                onError: error => {
-                    console.log(error)
-                }
-            })
+        const query = `https://api.edamam.com/search?q=${params}&app_id=${appID}&app_key=${apiKey}`;
+        const response = await fetch(query);
+        const data = await response.json();
+        const newRecipes = data.hits.map(hit => new Recipe({ ...hit.recipe })) || null;
+        return newRecipes;        
     }
+
+    // runSampleQuery() {
+    //     const session = this.driver.session();
+
+    //     // Run a Cypher statement, reading the result in a streaming manner as records arrive:
+    //     session
+    //         .run('MERGE (alice:Person {firstName : $_name}) RETURN alice.firstName AS name', {
+    //             _name: 'Alice'
+    //         })
+    //         .subscribe({
+    //             onKeys: keys => {
+    //                 console.log(keys)
+    //             },
+    //             onNext: record => {
+    //                 console.log(record.get('name'))
+    //             },
+    //             onCompleted: () => {
+    //                 session.close() // returns a Promise
+    //             },
+    //             onError: error => {
+    //                 console.log(error)
+    //             }
+    //         })
+    // }
 }
 
