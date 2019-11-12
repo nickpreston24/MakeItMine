@@ -9,9 +9,9 @@ const appID = "2ff8e6f6";
 export default class RecipesController {
 
     constructor() {
-        this.uri = "bolt://localhost";
-        this.user = "neo4j";
-        this.password = 'root';
+        this.uri = process.env.GRAPHENEDB_BOLT_URL || "bolt://localhost";
+        this.user = process.env.GRAPHENEDB_BOLT_USER || "neo4j";
+        this.password = process.env.GRAPHENEDB_BOLT_PASSWORD || 'root';
         this.neo4j = require('neo4j-driver').v1;
         this.driver = this.neo4j.driver(this.uri, this.neo4j.auth.basic(this.user, this.password));
     }
@@ -120,7 +120,7 @@ export default class RecipesController {
         const response = await fetch(query);
         const data = await response.json();
         const newRecipes = data.hits.map(hit => new Recipe({ ...hit.recipe })) || null;
-        return newRecipes;        
+        return newRecipes;
     }
 
     // runSampleQuery() {
