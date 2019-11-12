@@ -1,7 +1,7 @@
 export default class Recipe {
     // constructor({ id, title, author }, ...props) {
     constructor(props) {
-        console.log('setting props up: ', props);
+        // console.log('setting props up: ', props);
 
         const { id, title, author } = props;
         const { url, label, image, ingredients } = props;
@@ -11,7 +11,7 @@ export default class Recipe {
         this.image = image || "";
         this.url = url || "";
 
-        console.log(this.url);
+        // console.log(this.url);
 
         this.id = id || null;
         this.title = title || label || "";

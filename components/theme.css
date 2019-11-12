@@ -1,0 +1,374 @@
+.display-none {
+    display: none;
+}
+
+.color-none {
+    color: transparent;
+}
+
+
+
+/* ========================================= */
+/* side menu */
+/* ========================================= */
+
+.menu-container {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.363);
+    /* background-color: black; */
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    z-index: 3;
+    overflow: hidden;
+    
+}
+
+.menu {
+    width: 90%;
+    height: 100%;
+    position: absolute;
+    right: 0px;
+    background-color: #FFFDE7;
+    
+}
+
+.animate-menu-out {
+    animation-name: animate-menu-out;
+    animation-duration: 0.3s;
+}
+
+.animate-menu-in {
+    animation-name: animate-menu-in;
+    animation-duration: 0.3s;
+}
+
+@keyframes animate-menu-out {
+    from {right: -100%; opacity: 0}
+    to {right: 0; opacity: 1}
+}
+
+@keyframes animate-menu-in {
+    from {right: 0; opacity: 1}
+    to {right: -100%; opacity: 0}
+}
+
+/* ========================================= */
+/* side menu end */
+/* ========================================= */
+
+
+/* ========================================= */
+/* modals */
+/* ========================================= */
+
+
+#login-form input, #signup-form input {
+    display: block;
+    margin: 10px;
+}
+
+
+
+#text-area-div, #login-modal, #signup-modal {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.363);
+    z-index: 4;
+}
+
+#text-area-modal, #signup-form-div, #login-form-div {
+    position: absolute;
+    width: 100%;
+    padding: 15px 0px;
+    background-color: #eeefd0;
+    top: 10%;
+}
+
+#add-note-area {
+    width: 100%;
+    padding: 2px;
+    /* margin: 5px; */
+    box-sizing: border-box;
+    resize: vertical;
+    height: 100px;
+}
+
+.animate-modal-out {
+    animation-name: animate-modal-out;
+    animation-duration: 0.3s;
+}
+
+.animate-modal-in {
+    animation-name: animate-modal-in;
+    animation-duration: 0.3s;
+}
+
+@keyframes animate-modal-out {
+    from {top: 0; opacity: 0}
+    to {top: 10%; opacity: 1}
+}
+
+@keyframes animate-modal-in {
+    from {top: 10%; opacity: 1}
+    to {top: 0; opacity: 0}
+}
+
+
+
+/* ========================================= */
+/* modals end */
+/* ========================================= */
+
+
+
+
+html, body {
+    height: 100%;
+    font-family: Georgia;
+    background-color: grey;
+}
+
+.container {
+    max-width: 375px;
+    background-color: #FFFDE7;
+    margin: 0 auto;
+    height: 100%;
+    position: relative;
+    /* display: flex; */
+}
+
+header {
+    display: flex;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    justify-content: space-between;
+    height: 50px;
+    align-items: center;
+    background-color: #EEEFD0;
+    color: #597700;
+    z-index: 2;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+
+
+#back-arrow {
+    font-size: 40px;
+    padding-left: 8px;
+    /* width: 33%; */
+}
+
+#logo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    height: 40px;
+    line-height: .7;
+    /* width: 34%; */
+}
+
+#logo-top {
+    font-size: 20px;
+    font-family: Elsie;
+    color: #597700;
+}
+
+#logo-bottom {
+   font-size: 35px;
+   font-family: 'Segoe UI';
+   font-weight: bold;
+}
+
+#account-icon {
+    font-size: 30px;
+    padding-right: 15px;
+    /* width: 33%; */
+    text-align: right;
+}
+
+article {
+    width: 100%;
+    position: relative;
+    height: calc(100vh - 100px);
+    max-height: calc(100vh - 100px);
+    padding: 50px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: center;
+    
+}
+
+#search-form {
+    margin-top: 10px;
+}
+
+#search-form input[type=text] {
+    position: relative;
+    padding: 12px 20px 12px 30px;
+    width: 150px;
+    border: none;
+    border-radius: 50px;
+    background-color: rgb(241, 241, 241);
+    background-image: url('../images/search-icon.png');
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
+
+#search-form input[type=text]:focus {
+    outline: none;
+    box-shadow: 0 0 2px black;
+    
+}
+
+#search-form input[type=submit], button {
+    position: relative;
+    padding: 12px 20px;
+    /* width: 100px; */
+    background-color: #f87d73;
+    border: none;
+    color: white;
+    border-radius: 50px;
+    box-shadow: 1px 1px 2px #8d8d8d;
+    transition-property: transform, box-shadow;
+    transition-duration: .3s;
+}
+
+#search-form input[type=submit]:focus, button:focus {
+    outline: none;
+}
+
+#search-form input[type=submit]:active, button:active {
+    transform: scale(.95);
+    box-shadow: none;
+}
+
+#recipe-info {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    flex-wrap: wrap;
+    text-align: center;
+    overflow-y: scroll;
+}
+
+.recipe-div {
+    width: 45%;
+    margin: 10px 0px;
+    background-color: #EEEFD0;
+    color: #597700;
+    border-radius: 3px;
+    box-shadow: 1px 1px 2px #8d8d8d;
+}
+
+.recipe-div:hover {
+    /* background-color: #597700; */
+    color: #8b1b1f;
+}
+
+.recipe-div img {
+    width: 100%;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.recipe-div p {
+    margin: 15px 0px;
+}
+
+#recipe-view-list {
+    text-align: left;
+}
+
+#recipe-view-div {
+    position: relative;
+}
+
+#recipe-view-name {
+    color: #8b1b1f;
+    font-weight: bold;
+    font-size: 30px;
+    margin: 10px 0;
+    font-family: 'Segoe UI';
+}
+
+#recipe-view-list {
+   list-style-type: circle;
+   list-style-position: inside;
+   margin: 10px 5px; 
+}
+
+#recipe-view-list li {
+    margin: 5px 0px;
+}
+
+#recipe-view-instructions a {
+    text-decoration: none;
+    font-family: Georgia;
+    color: #597700;
+    font-size: 20px;
+    margin: 10px 0px;
+}
+
+#recipe-view-div button {
+    margin: 10px;
+}
+
+
+
+footer {
+    position: absolute;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    background-color: #EEEFD0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+
+
+
+.recipe-name {
+    font-weight: bold;
+}
+
+
+
+
+
+/* scrollbar style */
+/* width */
+::-webkit-scrollbar {
+    width: 4px;
+    
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #f87d73; 
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #c14d47; 
+}
+/* end scrollbar style */

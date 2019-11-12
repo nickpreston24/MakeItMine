@@ -23,6 +23,9 @@ import { Link } from '@material-ui/core';
 const useStyles = makeStyles(theme => ({
     card: {
         maxWidth: 345,
+        width: "100%",
+        borderTopLeftRadius: '3px'
+        // border-top-right-radius: 3px;
     },
     media: {
         height: 0,
@@ -41,32 +44,21 @@ const useStyles = makeStyles(theme => ({
     avatar: {
         backgroundColor: red[500],
     },
+    article: {
+        width: '100%',
+        position: relative,
+        height: "calc(100vh - 100px)",
+        "max-height": "calc(100vh - 100px)",
+        padding: "50px 0",
+        display: flex,
+        "flex-direction": column,
+        "justify-content": flex - start,
+        "text-align": center,
+    },
+    recipeName: {
+        "font-weight": bold,
+    }
 }));
-
-let loremRecipe = {
-    url: "http://www.pbs.org/food/recipes/poached-eggs/",
-    title: "Shrimp and Chorizo Paella",
-    description: "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.",
-    image: "/static/images/cards/paella.jpg",
-    instructions: [
-        "Method:",
-        "Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes.",
-        "Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly                        browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken                        and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and                        pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.",
-        "Add rice and stir very gently to distribute. Top with artichokes and peppers, and cook        without stirring, until most of the liquid is absorbed, 15 to 18 minutes. Reduce heat to        medium-low, add reserved shrimp and mussels, tucking them down into the rice, and cook        again without stirring, until mussels have opened and rice is just tender, 5 to 7        minutes more. (Discard any mussels that don’t open.)",
-        "Set aside off of the heat to let rest for 10 minutes, and then serve."
-    ],
-    ingredients: [
-        {
-            text: "4 eggs",
-            weight: 172
-        },
-        {
-            text: "1 tablespoon vinegar (cheap stuff will do)",
-            weight: 14.9
-        },
-
-    ]
-}
 
 export default function RecipeReviewCard({ recipe } = {}) {
 
@@ -78,7 +70,7 @@ export default function RecipeReviewCard({ recipe } = {}) {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
 
-    console.log(recipe);
+    // console.log(recipe);
 
     const onExpand = () => {
         setExpanded(!expanded);
@@ -94,11 +86,6 @@ export default function RecipeReviewCard({ recipe } = {}) {
                         {title.slice(0, 1)}
                     </Avatar>
                 }
-                // action={
-                //     <IconButton aria-label="settings">
-                //         <MoreVertIcon />
-                //     </IconButton>
-                // }
                 title={title}
                 subheader="September 14, 2016"
             />
@@ -116,9 +103,6 @@ export default function RecipeReviewCard({ recipe } = {}) {
                 <IconButton aria-label="add to favorites">
                     <FavoriteIcon />
                 </IconButton>
-                {/* <IconButton aria-label="share">
-                    <ShareIcon />
-                </IconButton> */}
                 <IconButton>
                     <LinkIcon>
                         {/* TODO: link to given recipe url */}
@@ -138,10 +122,10 @@ export default function RecipeReviewCard({ recipe } = {}) {
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    {ingredients.map(line => <Typography paragraph>{line.text}</Typography>)}
+                    {ingredients.map((line, idx) => <Typography key={idx} paragraph>{line.text}</Typography>)}
                 </CardContent>
                 <CardContent>
-                    {instructions.map(line => <Typography paragraph>{line}</Typography>)}
+                    {instructions.map((line, idx) => <Typography paragraph>{line}</Typography>)}
                 </CardContent>
             </Collapse>
         </Card>
