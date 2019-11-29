@@ -117,7 +117,7 @@ export default class RecipesController {
     }
 
     async searchEdamame(params) {
-        console.log(`searching for ${params}`)
+        // console.log(`searching for ${params}`)
 
         const query = `https://api.edamam.com/search?q=${params}&app_id=${this.appID}&app_key=${this.apiKey}`;
         const response = await fetch(query);

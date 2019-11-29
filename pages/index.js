@@ -1,8 +1,12 @@
-import Layout from '../components/Layout';
+import { MenuContainer, Layout, Login } from '../components';
 
 const Index = () => {
     return (
-        <Layout/>            
+        <div>
+            <Layout />
+            <MenuContainer />
+            <Login />
+        </div>
     )
 };
 

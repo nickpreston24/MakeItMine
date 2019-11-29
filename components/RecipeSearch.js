@@ -43,10 +43,7 @@ const RecipeSearchBar = () => {
             <br />
             <SubmitButton
                 action={async () => {
-                    const results = await recipesController.searchEdamame(document.getElementById("recipe-search-box").value)
-                    console.log('inner results', results);
-
-                    // console.log('new recipes; ', results);
+                    const results = await recipesController.searchEdamame(document.getElementById("recipe-search-box").value)                    
                     setRecipes(results);
                 }}
                 text="Search"
@@ -69,7 +66,7 @@ const GreenCheckbox = withStyles({
 
 const RecipePicker = ({ recipes }) => {
 
-    console.log('initial state (Picker)', recipes);
+    // console.log('initial state (Picker)', recipes);
 
 
     const [state, setState] = React.useState({
