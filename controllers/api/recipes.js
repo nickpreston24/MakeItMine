@@ -1,19 +1,22 @@
 import Recipe from '../../models/Recipe';
 
-// require('dotenv').config()
 // console.log(process.env.EDAMAME_APIKEY);
-//TODO: move key to environment variables
-const apiKey = "38d3947a3f2af312047999390586a0ad";
-const appID = "2ff8e6f6";
+// console.log(process.env.EDAMAME_APPID);
 
 export default class RecipesController {
 
-    constructor() {
-        this.uri = process.env.GRAPHENEDB_BOLT_URL || "bolt://localhost";
-        this.user = process.env.GRAPHENEDB_BOLT_USER || "neo4j";
-        this.password = process.env.GRAPHENEDB_BOLT_PASSWORD || 'root';
+    constructor(...config) {
+
+        if (config) {
+            Object.assign(this, ...config)
+        }
+        else {
+            this.uri = process.env.GRAPHENEDB_BOLT_URL || "bolt://localhost";
+            this.user = process.env.GRAPHENEDB_BOLT_USER || "neo4j";
+            this.password = process.env.GRAPHENEDB_BOLT_PASSWORD || 'root';
+        }
         this.neo4j = require('neo4j-driver').v1;
-        this.driver = this.neo4j.driver(this.uri, this.neo4j.auth.basic(this.user, this.password));
+        this.driver = this.neo4j.driver(this.url, this.neo4j.auth.basic(this.user, this.password));
     }
 
     /**
@@ -116,7 +119,7 @@ export default class RecipesController {
     async searchEdamame(params) {
         console.log(`searching for ${params}`)
 
-        const query = `https://api.edamam.com/search?q=${params}&app_id=${appID}&app_key=${apiKey}`;
+        const query = `https://api.edamam.com/search?q=${params}&app_id=${this.appID}&app_key=${this.apiKey}`;
         const response = await fetch(query);
         const data = await response.json();
         const newRecipes = data.hits.map(hit => new Recipe({ ...hit.recipe })) || null;
