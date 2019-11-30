@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, TextField, Checkbox, withStyles, FormControlLabel } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
-import SubmitButton from './SubmitButton';
-import { RecipeLink, RecipeReviewCard } from '.'
-import { recipesController } from '../controllers';
-import { Recipe } from '../models'
+import SubmitButton from '../buttons/SubmitButton';
+import { RecipeLink, RecipeReviewCard } from '..'
+import { recipesController } from '../../controllers';
+import { Recipe } from '../../models'
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -43,7 +43,7 @@ const RecipeSearchBar = () => {
             <br />
             <SubmitButton
                 action={async () => {
-                    const results = await recipesController.searchEdamame(document.getElementById("recipe-search-box").value)                    
+                    const results = await recipesController.searchNutrition(document.getElementById("recipe-search-box").value)                    
                     setRecipes(results);
                 }}
                 text="Search"

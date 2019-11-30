@@ -5,8 +5,8 @@
     "@material-ui/core": "^4.7.0",
     "@material-ui/icons": "^4.5.1",
     "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "firebase": "^7.5.0",
-    "fs": "^0.0.1-security",
     "isomorphic-unfetch": "^3.0.0",
     "neo4j-driver": "^1.7.6",
     "next": "^9.1.4",
@@ -15,7 +15,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "dev": "next",
+    "dev": "next && nodemon",
     "build": "next build",
     "start": "next start -p $PORT",
     "heroku-postbuild": "npm run build",
@@ -26,11 +26,13 @@
     "url": "git+https://github.com/MikePreston17/MakeItMine.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Michael Preston",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/MikePreston17/MakeItMine/issues"
   },
   "homepage": "https://github.com/MikePreston17/MakeItMine#readme",
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^2.0.1"
+  }
 }

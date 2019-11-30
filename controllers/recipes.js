@@ -1,22 +1,13 @@
-import Recipe from '../../models/Recipe';
+// import GraphControllerBase from './base';
+// import Recipe from '../../models/Recipe';
 
-// console.log(process.env.EDAMAME_APIKEY);
-// console.log(process.env.EDAMAME_APPID);
+const { GraphControllerBase } = require('./base');
+const Recipe = require('../models/Recipe');
 
-export default class RecipesController {
+class RecipesController extends GraphControllerBase {
 
-    constructor(...config) {
-
-        if (config) {
-            Object.assign(this, ...config)
-        }
-        else {
-            this.uri = process.env.GRAPHENEDB_BOLT_URL || "bolt://localhost";
-            this.user = process.env.GRAPHENEDB_BOLT_USER || "neo4j";
-            this.password = process.env.GRAPHENEDB_BOLT_PASSWORD || 'root';
-        }
-        this.neo4j = require('neo4j-driver').v1;
-        this.driver = this.neo4j.driver(this.url, this.neo4j.auth.basic(this.user, this.password));
+    constructor(config) {
+        super(config)
     }
 
     /**
@@ -64,7 +55,7 @@ export default class RecipesController {
      * Gets contributors to a given recipe name or title
      * @param {*} recipeTitle 
      */
-    getRecipeContributors(recipeTitle) {
+    getContributors(recipeTitle) {
         const session = this.driver.session();
         return session
             .run(
@@ -89,9 +80,20 @@ export default class RecipesController {
             });
     }
 
-    getAll() {
+    /**
+     * Get all recipes
+     */
+    get(skip = 0, take = 0, limit = 10) {
         const session = this.driver.session();
-        const query = "MATCH (recipe:Recipe) return recipe, ID(recipe) as id LIMIT 10";
+        let query = `MATCH (recipe:Recipe) return recipe, ID(recipe) as id`;
+
+        if (skip > 0)
+            query += `SKIP ${skip}`;
+        if (take > 0)
+            query += `TAKE ${take}`;
+        if (limit > 0)
+            query += `LIMIT ${limit}`;
+
         return session
             .run(query)
             .then(result => {
@@ -116,8 +118,10 @@ export default class RecipesController {
             });
     }
 
-    async searchEdamame(params) {
-        // console.log(`searching for ${params}`)
+    /**
+     * Search Edamame for nutrition stats
+     */
+    async searchNutrition(params) {
 
         const query = `https://api.edamam.com/search?q=${params}&app_id=${this.appID}&app_key=${this.apiKey}`;
         const response = await fetch(query);
@@ -126,28 +130,54 @@ export default class RecipesController {
         return newRecipes;
     }
 
-    // runSampleQuery() {
-    //     const session = this.driver.session();
+    async getRecipeAuthors(recipeName) {
+        let query = `MATCH (recipe:Recipe {name: ${recipeName}})
+        OPTIONAL MATCH (recipe)-[:Authored_By]->(author:Person) 
+        return recipe, author`
 
-    //     // Run a Cypher statement, reading the result in a streaming manner as records arrive:
-    //     session
-    //         .run('MERGE (alice:Person {firstName : $_name}) RETURN alice.firstName AS name', {
-    //             _name: 'Alice'
-    //         })
-    //         .subscribe({
-    //             onKeys: keys => {
-    //                 console.log(keys)
-    //             },
-    //             onNext: record => {
-    //                 console.log(record.get('name'))
-    //             },
-    //             onCompleted: () => {
-    //                 session.close() // returns a Promise
-    //             },
-    //             onError: error => {
-    //                 console.log(error)
-    //             }
-    //         })
-    // }
+        const session = this.driver.session();
+
+        return session
+            .run(query)
+            .then(result => {
+                session.close();
+                if (!result.records)
+                    return null;
+
+                const authors = result.records.map(record => {
+                    return new Author({
+                        id: record.get(0).identity.low,
+                        firstName: record.get('author').properties.firstName,
+                        lastName: record.get('author').properties.lastName
+                    })
+                })
+
+                return authors;
+            })
+
+    }
+
+    async updateRecipe(props) {
+        const newRecipe = new Recipe(props);
+        console.log('here is the updated recipe: ', newRecipe);
+
+        let query = `MATCH (recipe:Recipe {id: ${newRecipe.id}})`;
+
+        if (newRecipe.title)
+            query += `SET recipe.title = ${newRecipe.title}`;
+
+        const session = this.driver.session();
+
+        return session.run(query)
+            .then(result => {
+                session.close();
+
+                // if (!result.records)
+                //     return null;
+
+                // return newRecipe;
+            })
+    }
 }
 
+module.exports = RecipesController

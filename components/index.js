@@ -1,8 +1,8 @@
 import Header from './Header';
 import Layout from './Layout';
-import RecipeSearchBar from './RecipeSearch';
-import RecipeLink from "./RecipeLink";
-import RecipeReviewCard from "./RecipeReviewCard";
+import RecipeSearchBar from './recipes/RecipeSearch';
+import RecipeLink from "./recipes/RecipeLink";
+import RecipeReviewCard from "./recipes/RecipeReviewCard";
 
 import MenuContainer from './containers/MenuContainer'
 

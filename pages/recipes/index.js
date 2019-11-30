@@ -19,7 +19,7 @@ const Recipes = ({ recipes }) => {
 
 Recipes.getInitialProps = async () => {
 
-  const data = await recipesController.getAll();
+  const data = await recipesController.get();
 
   return {
     recipes: data
