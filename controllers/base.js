@@ -5,6 +5,10 @@ const Connection = require('./connection');
  */
 class BaseController {
     constructor(config) {
+
+        if (!config || Object.values(config).some(prop => !prop))
+            throw new Error('Config cannot have null values!')
+
         this.driver = new Connection(config).driver;
     }
 

@@ -3,7 +3,7 @@ import { makeStyles, TextField, Checkbox, withStyles, FormControlLabel } from '@
 import { green } from '@material-ui/core/colors';
 import SubmitButton from '../buttons/SubmitButton';
 import { RecipeLink, RecipeReviewCard } from '..'
-import { recipesController } from '../../controllers';
+import { recipesStore } from '../../controllers';
 import { Recipe } from '../../models'
 
 const useStyles = makeStyles(theme => ({
@@ -43,7 +43,7 @@ const RecipeSearchBar = () => {
             <br />
             <SubmitButton
                 action={async () => {
-                    const results = await recipesController.searchNutrition(document.getElementById("recipe-search-box").value)                    
+                    const results = await recipesStore.searchNutrition(document.getElementById("recipe-search-box").value)                    
                     setRecipes(results);
                 }}
                 text="Search"

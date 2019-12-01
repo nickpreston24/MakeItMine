@@ -1,5 +1,5 @@
 import { Layout, RecipeLink, RecipeSearchBar } from '../../components';
-import { recipesController } from '../../controllers';
+import { recipesStore } from '../../controllers';
 
 const Recipes = ({ recipes }) => {
   // console.log('recipes', recipes)  
@@ -19,7 +19,7 @@ const Recipes = ({ recipes }) => {
 
 Recipes.getInitialProps = async () => {
 
-  const data = await recipesController.get();
+  const data = await recipesStore.get();
 
   return {
     recipes: data

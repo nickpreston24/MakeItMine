@@ -1,5 +1,5 @@
 import Layout from '../../components/Layout';
-import { recipesController } from '../../controllers';
+import { recipesStore } from '../../controllers';
 
 const Recipe = ({ recipe } = {}) => {
 
@@ -23,7 +23,7 @@ const Recipe = ({ recipe } = {}) => {
 */
 Recipe.getInitialProps = async function (context) {
     const id = context.query.id;
-    const recipe = await recipesController.findById(id);
+    const recipe = await recipesStore.findById(id);
 
     // console.log(`Recipe # ${id}`, recipe);
     return { recipe };
