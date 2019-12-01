@@ -1,26 +1,21 @@
-export default class Recipe {
-    // constructor({ id, title, author }, ...props) {
-    constructor(props) {
-        // console.log('setting props up: ', props);
+const Model = require('./Model');
 
-        const { id, title, author } = props;
-        const { url, label, image, ingredients } = props;
-
-        this.ingredients = ingredients || [];
-        this.instructions = [];
-        this.image = image || "";
-        this.url = url || "";
-
-        // console.log(this.url);
-
-        this.id = id || null;
-        this.title = title || label || "";
-        this.author = author || {};
-        this.author.name = ((this.author.firstName || "") + " " + (this.author.lastName || "")).trim();
-
-        // Object.assign(this, props);
+module.exports = class Recipe extends Model {
+    constructor(id, title, ingredients = [], instructions = [], url = null, ...rest) {
+        super(rest)
+        Object.assign(this, { id, title, url, ingredients, instructions })
     }
 
+    withAuthor(author) {
+        if (typeof (author) === 'Author') {
+            this.author = author;
+            this.author.name = ((this.author.firstName || "") + " " + (this.author.lastName || "")).trim();
+        }
+    }
+
+    /**
+     * TODO: To an Edamame Recipe (typescriptify?)
+     */
     // edamameToRecipes(recipe) {
     //     return {
     //         title: recipe.label,
@@ -29,13 +24,5 @@ export default class Recipe {
     //         image: recipe.image,
     //         url: recipe.url,
     //     }
-    // }
-
-    // // const { id, title, author } = props;
-
-    // this.id = id || null;
-    // this.title = title || rest.keys('label') ? rest.label : null || null;
-    // this.ingredients = rest.keys('ingredients') ? rest.ingredients : null;
-    // this.author = author || {};
-    // this.author.name = ((this.author.firstName || "") + " " + (this.author.lastName || "")).trim();
+    // }    
 }

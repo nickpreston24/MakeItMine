@@ -22,5 +22,5 @@ const dummyData =
       id: 123
     },
   ]
-  
-export default dummyData;
+
+module.exports = dummyData;

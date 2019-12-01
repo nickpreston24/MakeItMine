@@ -1,5 +1,5 @@
-import Model from './Model'
+const User = require('./User');
 
-export default class Author extends Model {
-    // firstName, lastName;
-}
+class Author extends User { }
+
+module.exports = Author;

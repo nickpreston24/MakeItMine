@@ -1,7 +1,9 @@
-import Recipe from './Recipe'
-import User from './User'
+const Recipe = require('./Recipe');
+const User = require('./User');
+const Author = require('./Author');
 
-export {
-    Recipe,
+module.exports = {
+    Author,
     User,
+    Recipe,
 }

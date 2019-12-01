@@ -19,7 +19,8 @@
     "build": "next build",
     "start": "next start -p $PORT",
     "heroku-postbuild": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "seed": ""
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,10 @@
   },
   "homepage": "https://github.com/MikePreston17/MakeItMine#readme",
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "gulp": "^4.0.2",
+    "mocha": "^6.2.2",
     "nodemon": "^2.0.1"
   }
 }

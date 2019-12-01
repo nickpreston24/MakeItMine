@@ -1,31 +1,27 @@
-// import GraphControllerBase from './base';
-// import Recipe from '../../models/Recipe';
+const { Recipe, Author } = require('../models');
+const BaseController = require('./base');
 
-const { GraphControllerBase } = require('./base');
-const Recipe = require('../models/Recipe');
-
-class RecipesController extends GraphControllerBase {
-
-    constructor(config) {
-        super(config)
-    }
+class RecipesController extends BaseController {
 
     /**
      * Find a specific recipe by its Id
-     * @param {*} recipeId 
+     * @param {*} id 
      */
-    findById(recipeId) {
-        // TODO: type check id as number
-        // console.log(`looking for recipe with id: ${recipeId}`, isNaN(recipeId), typeof (recipeId))
+    async findById(id, includeAuthors = false) {
+
         const session = this.driver.session();
-        const query = "MATCH (recipe:Recipe) WHERE id(recipe) = {id} \ OPTIONAL MATCH(recipe) - [:Authored_By] -> (author: Person) \ return recipe, author";
+        let query = `MATCH (recipe:Recipe) WHERE id(recipe) = ${id} `;
+
+        query += !includeAuthors
+            ? `return recipe`
+            : `OPTIONAL MATCH(recipe)-[:Authored_By]->(author: Person) \ return recipe, author`;
 
         return session
-            .run(query, { id: parseInt(recipeId) })
+            .run(query, { id: parseInt(id) })
             .then(result => {
 
                 session.close();
-
+                // console.log(result)
                 if (!result.records)
                     return null;
 
@@ -35,35 +31,66 @@ class RecipesController extends GraphControllerBase {
                     return null;
 
                 const recipe = record.get('recipe');
-                const author = record.get('author') || {};
+                const author = new Author(includeAuthors ? record.get('author') : {});
 
-                let { firstName, lastName } = author.properties || {};
+                // let { firstName, lastName } = author.properties || {};
 
-                return new Recipe({
-                    id: recipeId,
-                    title: recipe.properties.title,
-                    author: { firstName, lastName }
-                });
+                return new Recipe(
+                    id,
+                    recipe.properties.title,
+                    author
+                );
             })
             .catch(error => {
                 session.close();
-                // throw error;
+                throw error;
             });
+    }
+
+    async create(recipe) {
+
+        const session = this.driver.session();
+        // console.log('creating recipe: ', recipe);
+        const { title, ingredients, instructions } = recipe;
+
+        return session.run(
+            `MERGE (recipe:Recipe {title: $title, ingredients: $ingredients}) \
+            return recipe`, { title, ingredients, instructions })
+            .then(result => {
+
+                session.close();
+
+                if (!result.records)
+                    return null;
+
+                let record = result.records[0];
+
+                return new Recipe(
+                    parseInt(record.get(0).identity.low),
+                    record.get('recipe').properties.title
+                );
+            })
+            .catch(error => {
+                session.close();
+                throw error;
+            });
+
     }
 
     /**
      * Gets contributors to a given recipe name or title
-     * @param {*} recipeTitle 
+     * @param {*} title 
      */
-    getContributors(recipeTitle) {
+    async getContributors(title) {
         const session = this.driver.session();
+
         return session
             .run(
-                "MATCH (recipe:Recipe {title:{title}}) \
+                "MATCH (recipe:Recipe {title: $title}) \
                 OPTIONAL MATCH (recipe)<-[r]-(person:Person) \
                 RETURN recipe.title AS name, \
                 collect([person.firstName, person.lastName]) AS author \
-                LIMIT 1", { title: recipeTitle })
+                LIMIT 1", { title })
             .then(result => {
                 session.close();
 
@@ -76,16 +103,16 @@ class RecipesController extends GraphControllerBase {
             })
             .catch(error => {
                 session.close();
-                // throw error;
+                throw error;
             });
     }
 
     /**
      * Get all recipes
      */
-    get(skip = 0, take = 0, limit = 10) {
+    async get(skip = 0, take = 0, limit = 10) {
         const session = this.driver.session();
-        let query = `MATCH (recipe:Recipe) return recipe, ID(recipe) as id`;
+        let query = `MATCH (recipe:Recipe) return recipe, ID(recipe) as id `;
 
         if (skip > 0)
             query += `SKIP ${skip}`;
@@ -94,10 +121,15 @@ class RecipesController extends GraphControllerBase {
         if (limit > 0)
             query += `LIMIT ${limit}`;
 
+        console.log('query: ', query)
+
         return session
             .run(query)
             .then(result => {
                 session.close();
+
+                // console.log('result', result);
+
                 if (!result.records)
                     return null;
 
@@ -110,12 +142,47 @@ class RecipesController extends GraphControllerBase {
                         });
                     })
 
-                return recipes;
+                    return recipes;
             })
             .catch(error => {
                 session.close();
-                // throw error;
+                throw error;
             });
+    }
+
+    deletionModeMap = {
+        nodesOnly: ` delete `,
+        relationshipsOnly: `-[r:*]->() \ delete`,
+        all: ` detach delete `
+    }
+
+    async delete(id, mode = 'all') {
+        // console.log('id to delete: ', id)
+
+        let query = `MATCH (r:Recipe {id: $id})`
+        query += this.deletionModeMap[mode] + " r";
+
+        const session = this.driver.session();
+
+        return session
+            .run(query, { id })
+            .then(result => {
+                session.close();
+
+                console.log('Query: ', query)
+
+                // if (!result.records)
+                //     return null;
+
+                // let record = result.records[0];
+
+                // return record;
+            })
+            .catch(error => {
+                session.close();
+                throw error;
+            });
+
     }
 
     /**
@@ -145,16 +212,15 @@ class RecipesController extends GraphControllerBase {
                     return null;
 
                 const authors = result.records.map(record => {
-                    return new Author({
-                        id: record.get(0).identity.low,
-                        firstName: record.get('author').properties.firstName,
-                        lastName: record.get('author').properties.lastName
-                    })
+                    return new Author(
+                        record.get(0).identity.low,
+                        record.get('author').properties.firstName,
+                        record.get('author').properties.lastName
+                    )
                 })
 
                 return authors;
             })
-
     }
 
     async updateRecipe(props) {
@@ -177,6 +243,55 @@ class RecipesController extends GraphControllerBase {
 
                 // return newRecipe;
             })
+    }
+
+
+    async sampleTransaction() {
+
+        const session = this.driver.session();
+
+        var promise = session.readTransaction(transaction => {
+            var result = transaction.run(
+                'MATCH (recipe:Recipe {title: $title}) return recipe.title',
+                { title: 'Cannoli' }
+                // 'MATCH (person:Person) RETURN person.name AS name'
+            );
+            return result;
+        })
+
+        promise.then(result => {
+            // session.close();
+            this.driver.close();
+            console.log(result.records);
+        }).catch(console.error)
+    }
+
+
+    async sampleQuery() {
+
+        const session = this.driver.session();
+
+        const personName = 'Joan';
+        const resultPromise = session.run(
+            'CREATE (a:Person {name: $name}) RETURN a',
+            { name: personName }
+        );
+
+        resultPromise.then(result => {
+            session.close();
+
+
+            console.log(result, result.records)
+
+            const singleRecord = result.records[0];
+            const node = singleRecord.get(0);
+
+            console.log(node.properties.title);
+
+            // on application exit:
+            this.driver.close();
+        });
+
     }
 }
 

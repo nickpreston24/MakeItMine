@@ -1,15 +1,11 @@
-export default class User {
-    constructor({ id, title, author }) {
-        this.id = id;
-        this.title = title || "";
-        this.author = author || {};
-        this.author.name = ((this.author.firstName || "") + " " + (this.author.lastName || "")).trim();
+/** Base domain User class
+ *  Automaps specific constructor params to itself */
+class User {
+    constructor(id, firstName, lastName) {
+        Object.assign(this, { id, firstName, lastName })
+        // console.log('assigned:', this)
+        this.name = (lastName && firstName) ? [lastName.trim(), firstName.trim(),].join(", ") : null
     }
 }
 
-// class UserAccount {
-//     constructor({ firebaseId, user }) {
-//         this.firebaseId = firebaseId;
-//         this.user = user;
-//     }
-// }
+module.exports = User;
