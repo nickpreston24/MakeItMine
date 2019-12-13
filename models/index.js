@@ -1,7 +1,7 @@
 const Recipe = require('./Recipe');
 const User = require('./User');
 const Author = require('./Author');
-const { BlogPost } = require('./BlogPost.ts');
+// const { BlogPost } = require('./BlogPost.ts');
 
 // const author = new Author(2, 'Greg', 'Wachowski');
 // console.log('Author: ', author)
@@ -11,5 +11,5 @@ module.exports = {
     Author,
     User,
     Recipe,
-    BlogPost
+    // BlogPost
 }
